@@ -1,8 +1,24 @@
 
 const picklejs = require('picklejs');
 
+const artist = require('./artista.js');
+
+const album = require('./album.js');
+
+// const track = require( 'track.js');
+
+// const playList = require ('playlist.js');
+ 
 
 class UNQfy {
+
+  constructor (){
+    this.artistas = [];
+    this.tracks = [];
+    this.albums = [];
+    this.playlists = [];
+  }
+
   getTracksMatchingGenres(genres) {
     // Debe retornar todos los tracks que contengan alguno de los generos en el parametro genres
 
@@ -17,8 +33,9 @@ class UNQfy {
      params.name (string)
      params.country (string)
   */
-  addArtist(params) {
+  addArtist(param) {
     // El objeto artista creado debe soportar (al menos) las propiedades name (string) y country (string)
+    this.artistas.push( new artist.Artista(param.name, param.country));
   }
 
 
@@ -28,6 +45,11 @@ class UNQfy {
   */
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
+    this.albums.push(new album.Album( params.albumName, params.albumYear));
+    let albumres = this.getAlbumByName(params.albumName);
+    // albumres.associateArtist(artistName);
+    let artistFound= this.getArtistByName(artistName);
+    artistFound.albumes.push(albumres);
   }
 
 
@@ -45,11 +67,19 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-
+    let artistFound = this.artistas.find( function (a){
+       let nameOfArtistIterator= a.name;
+       return (name == nameOfArtistIterator );
+    });
+    return (artistFound);
   }
 
   getAlbumByName(name) {
-
+    let albumFound = this.artistas.find( function (a){
+      let titleOfAlbumIterator= a.albumName;
+      return (name == titleOfAlbumIterator);
+    });
+    return (albumFound);
   }
 
   getTrackByName(name) {
@@ -85,5 +115,7 @@ class UNQfy {
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
+  artist,
+  album
 };
 
