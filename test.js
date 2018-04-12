@@ -15,8 +15,8 @@ function createAndAddAlbum(unqfy, artistName, albumName, albumYear) {
   return unqfy.getAlbumByName(albumName);
 }
 
-function createAndAddTrack(unqfy, albumName, trackName, trackDuraction, trackGenres) {
-  unqfy.addTrack(albumName, { name: trackName, duration: trackDuraction, genres: trackGenres });
+function createAndAddTrack(unqfy, albumName, trackName, trackDuraction, trackGenero) {
+  unqfy.addTrack(albumName, { name: trackName, duration: trackDuraction, genro: trackGenero });
   return unqfy.getTrackByName(trackName);
 }
 
@@ -28,55 +28,32 @@ describe('Add, remove and filter data', () => {
     unqfy = new libunqfy.UNQfy();
   });
 
-  // it('should add an artist', () => {
-  //   const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+  it('should add an artist', () => {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
 
-  //   assert.equal(artist.name, 'Guns n\' Roses');
-  //   assert.equal(artist.country, 'USA');
-  // });
+    assert.equal(artist.name, 'Guns n\' Roses');
+    assert.equal(artist.country, 'USA');
+  });
 
   it('should add an album to an artist', () => {
-    createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
 
     assert.equal(album.name, 'Appetite for Destruction');
     assert.equal(album.year, 1987);
   });
 
-//   it('should add a track to an album', () => {
-//     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-//     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
-//     const track = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+  // it('should add a track to an album', () => {
+  //   createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+  //   createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
+  //   const track = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, 'rock');
 
-//     assert.equal(track.name, 'Welcome to the jungle');
-//     assert.strictEqual(track.duration, 200);
-//     assert.equal(track.genres.includes('rock'), true);
-//     assert.equal(track.genres.includes('hard rock'), true);
-//     assert.lengthOf(track.genres, 2);
-//   });
+  //   assert.equal(track.name, 'Welcome to the jungle');
+  //   assert.strictEqual(track.duration, 200);
+  //   assert.equal(track.genero,'rock');
+  // });
 
-//   it('should get all tracks matching genres', () => {
-//     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-//     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
-//     const t0 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
-//     const t1 = createAndAddTrack(unqfy, 'Appetite for Destruction', "Sweet Child o' Mine", 500, ['rock', 'hard rock', 'pop', 'movie']);
-
-//     createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
-//     createAndAddAlbum(unqfy, 'Michael Jackson', 'Thriller', 1987);
-//     const t2 = createAndAddTrack(unqfy, 'Thriller', 'Trhiller', 200, ['pop', 'movie']);
-//     createAndAddTrack(unqfy, 'Thriller', 'Another song', 500, ['classic']);
-//     const t3 = createAndAddTrack(unqfy, 'Thriller', 'Another song II', 500, ['movie']);
-
-//     const tracksMatching = unqfy.getTracksMatchingGenres(['pop', 'movie']);
-
-//     // assert.equal(tracks.matching.constructor.name, Array);
-//     assert.isArray(tracksMatching);
-//     assert.lengthOf(tracksMatching, 4);
-//     assert.equal(tracksMatching.includes(t0), true);
-//     assert.equal(tracksMatching.includes(t1), true);
-//     assert.equal(tracksMatching.includes(t2), true);
-//     assert.equal(tracksMatching.includes(t3), true);
-//   });
+//  
 
 //   it('should get all tracks matching artist', () => {
 //     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');

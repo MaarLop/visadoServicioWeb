@@ -5,9 +5,9 @@ const artist = require('./artista.js');
 
 const album = require('./album.js');
 
-// const track = require( 'track.js');
+const track = require( './track.js');
 
-// const playList = require ('playlist.js');
+const playList = require ('./playList.js');
  
 
 class UNQfy {
@@ -19,12 +19,15 @@ class UNQfy {
     this.playlists = [];
   }
 
-  getTracksMatchingGenres(genres) {
+  getTracksMatchingGenres(gen) {
     // Debe retornar todos los tracks que contengan alguno de los generos en el parametro genres
-
+    let traksFilter= this.tracks.filter( (tr) => {
+      return( track.tr.genero === gen);       
+    });
   }
 
   getTracksMatchingArtist(artistName) {
+    let artistFound = this.getArtistByName(artistName);
 
   }
 
@@ -45,11 +48,11 @@ class UNQfy {
   */
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
-    this.albums.push(new album.Album( params.albumName, params.albumYear));
-    let albumres = this.getAlbumByName(params.albumName);
-    // albumres.associateArtist(artistName);
-    let artistFound= this.getArtistByName(artistName);
-    artistFound.albumes.push(albumres);
+    this.albums.push(new album.Album( params.name, params.year));
+    const albumres = this.getAlbumByName(params.albumName);
+    const artistFound= this.getArtistByName(artistName);
+    album.albumres.associateArtist(artistFound);
+    artist.artistFound.addAnAlbum(albumres);
   }
 
 
@@ -64,30 +67,42 @@ class UNQfy {
          duration (number),
          genres (lista de strings)
     */
+    this.tracks.push(new track.Track(params.name, params.duration, params.genero));
+    const trackFound = this.getTrackByName(params.name);
+    const albumFound = this.getAlbumByName(albumName);
+    track.trackFound.associateAlbum(albumFound);
+    album.albumFound.addATrack(trackFound);
   }
 
   getArtistByName(name) {
-    let artistFound = this.artistas.find( function (a){
-       let nameOfArtistIterator= a.name;
-       return (name == nameOfArtistIterator );
+    const artistFound = this.artistas.find( (a) => {
+      const nameOfArtistIterator= a.name;
+      return (name === nameOfArtistIterator );
     });
     return (artistFound);
   }
 
   getAlbumByName(name) {
-    let albumFound = this.artistas.find( function (a){
-      let titleOfAlbumIterator= a.albumName;
-      return (name == titleOfAlbumIterator);
+    const albumFound = this.albums.find( (a) => {
+      const titleOfAlbumIterator= a.name;
+      return (name === titleOfAlbumIterator);
     });
     return (albumFound);
   }
 
   getTrackByName(name) {
-
+    const trackFound = this.tracks.find( (t) => {
+      const titleOfTrackIterator= t.name;
+      return (name === titleOfTrackIterator);
+    });
+    return (trackFound);
   }
 
   getPlaylistByName(name) {
-
+    let list = this.playlists.find( function (l){
+      return (playList.l.playlistName == name);
+    });
+    return ( list);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
@@ -96,6 +111,10 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist
     */
+    let list = new playList.PlayList (name, maxDuration, genresToInclude);
+    playList.list.push(this.getTracksMatchingGenres(genresToInclude));
+    this.playlists.push (list);
+
 
   }
 
@@ -116,6 +135,8 @@ class UNQfy {
 module.exports = {
   UNQfy,
   artist,
-  album
+  album,
+  track,
+  playList
 };
 

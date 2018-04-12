@@ -1,14 +1,15 @@
 class Album{
 
   constructor (title,year){
-    this.albumName= title;
-    this.albumYear= year;
+    this.name= title;
+    this.year= year;
     this.artist;
   }
-  associateArtist(artistName){
-    this.artist= artistName;
+  associateArtist(artista){
+    this.artist= artista;
   }
 }
+
 module.exports = {
     Album,
   };
