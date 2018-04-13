@@ -1,13 +1,13 @@
 
 const picklejs = require('picklejs');
 
-const artist = require('./artista.js');
+const artistmod = require('./artista.js');
 
-const album = require('./album.js');
+const albummod = require('./album.js');
 
-const track = require( './track.js');
+const trackmod = require( './track.js');
 
-const playList = require ('./playList.js');
+const playListmod = require ('./playList.js');
  
 
 class UNQfy {
@@ -21,14 +21,20 @@ class UNQfy {
 
   getTracksMatchingGenres(gen) {
     // Debe retornar todos los tracks que contengan alguno de los generos en el parametro genres
-    let traksFilter= this.tracks.filter( (tr) => {
-      return( track.tr.genero === gen);       
+    const traksFilter= this.tracks.filter( (tr) => {
+      return( trackmod.tr.genero === gen);       
     });
+    return traksFilter;
   }
 
   getTracksMatchingArtist(artistName) {
-    let artistFound = this.getArtistByName(artistName);
-
+    const artistFound = this.getArtistByName(artistName);
+    const albumsOfArtist = artistmod.artistFound.albumes;
+    let traksOfArtist=[];
+    albumsOfArtist.forEach(alb => {
+      traksOfArtist.push (alb.tracks);
+    });
+    return traksOfArtist;
   }
 
 
@@ -38,7 +44,7 @@ class UNQfy {
   */
   addArtist(param) {
     // El objeto artista creado debe soportar (al menos) las propiedades name (string) y country (string)
-    this.artistas.push( new artist.Artista(param.name, param.country));
+    this.artistas.push( new artistmod.Artista(param.name, param.country));
   }
 
 
@@ -48,11 +54,16 @@ class UNQfy {
   */
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
-    this.albums.push(new album.Album( params.name, params.year));
-    const albumres = this.getAlbumByName(params.albumName);
     const artistFound= this.getArtistByName(artistName);
-    album.albumres.associateArtist(artistFound);
-    artist.artistFound.addAnAlbum(albumres);
+    if (this.artistas.includes(artistFound) ){
+      const albumres = new albummod.Album( params.name, params.year);
+      this.albums.push(albumres);
+      albummod.albumres.associateArtist(artistFound);
+      artistmod.artistFound.addAnAlbum(albumres);
+    }
+    else{
+      console.log('No existe el artista '+artistName);
+    }
   }
 
 
@@ -67,11 +78,17 @@ class UNQfy {
          duration (number),
          genres (lista de strings)
     */
-    this.tracks.push(new track.Track(params.name, params.duration, params.genero));
-    const trackFound = this.getTrackByName(params.name);
     const albumFound = this.getAlbumByName(albumName);
-    track.trackFound.associateAlbum(albumFound);
-    album.albumFound.addATrack(trackFound);
+    if (this.albums.includes(albumFound)){
+      const trackFound =new trackmod.Track(params.name, params.duration, params.genero);
+      this.tracks.push(trackFound);
+      trackmod.trackFound.associateAlbum(albumFound);
+      albummod.albumFound.addATrack(trackFound);
+    }
+    else{
+      console.log('No existe album '+ albumName);
+    }
+    
   }
 
   getArtistByName(name) {
@@ -99,8 +116,8 @@ class UNQfy {
   }
 
   getPlaylistByName(name) {
-    let list = this.playlists.find( function (l){
-      return (playList.l.playlistName == name);
+    const list = this.playlists.find( (l) => {
+      return (playListmod.l.playlistName === name);
     });
     return ( list);
   }
@@ -111,8 +128,8 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist
     */
-    let list = new playList.PlayList (name, maxDuration, genresToInclude);
-    playList.list.push(this.getTracksMatchingGenres(genresToInclude));
+    const list = new playListmod.PlayList (name, maxDuration, genresToInclude);
+    playListmod.list.push(this.getTracksMatchingGenres(genresToInclude));
     this.playlists.push (list);
 
 
@@ -134,9 +151,9 @@ class UNQfy {
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
-  artist,
-  album,
-  track,
-  playList
+  artistmod,
+  albummod,
+  trackmod,
+  playListmod
 };
 

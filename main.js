@@ -24,6 +24,8 @@ function main() {
   process.argv.forEach(argument => console.log(argument));
 }
 
+unqmod.addArtistaddArtist(process.argv);
+
 main();
 
 

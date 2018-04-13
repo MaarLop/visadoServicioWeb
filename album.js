@@ -4,6 +4,7 @@ class Album{
     this.name= title;
     this.year= year;
     this.artist;
+    this.tracks=[];
   }
   associateArtist(artista){
     this.artist= artista;
@@ -11,5 +12,5 @@ class Album{
 }
 
 module.exports = {
-    Album,
-  };
+  Album,
+};
