@@ -1,6 +1,6 @@
 
 const picklejs = require('picklejs');
-
+/*
 const artistmod = require('./artista.js');
 
 const albummod = require('./album.js');
@@ -8,7 +8,8 @@ const albummod = require('./album.js');
 const trackmod = require( './track.js');
 
 const playListmod = require ('./playList.js');
- 
+*/
+ module.exports(Artista,Track, Album, PlayList);
 
 class UNQfy {
 
@@ -142,7 +143,7 @@ class UNQfy {
   static load(filename = 'unqfy.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy];
+    const classes = [UNQfy, Artista,Track, Album, PlayList ];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }
@@ -151,9 +152,11 @@ class UNQfy {
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
+  /*
   artistmod,
   albummod,
   trackmod,
   playListmod
+  */
 };
 
