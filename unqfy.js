@@ -82,8 +82,8 @@ class UNQfy {
     if (this.albums.includes(albumFound)){
       const trackFound =new trackmod.Track(params.name, params.duration, params.genero);
       this.tracks.push(trackFound);
-      trackmod.trackFound.associateAlbum(albumFound);
-      albummod.albumFound.addATrack(trackFound);
+      trackFound.associateAlbum(albumFound);
+      albumFound.addATrack(trackFound);
     }
     else{
       console.log('No existe album '+ albumName);
