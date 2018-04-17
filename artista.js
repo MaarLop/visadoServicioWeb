@@ -5,6 +5,9 @@ class Artista{
     this.albumes = [];
     this.country = pais;
   }
+  addAnAlbum(album){
+    this.albumes.push(album);
+  }
 }
 module.exports = {
   Artista,

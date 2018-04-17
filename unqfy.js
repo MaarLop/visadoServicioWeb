@@ -1,6 +1,6 @@
 
 const picklejs = require('picklejs');
-/*
+
 const artistmod = require('./artista.js');
 
 const albummod = require('./album.js');
@@ -8,8 +8,7 @@ const albummod = require('./album.js');
 const trackmod = require( './track.js');
 
 const playListmod = require ('./playList.js');
-*/
- module.exports(Artista,Track, Album, PlayList);
+
 
 class UNQfy {
 
@@ -59,8 +58,8 @@ class UNQfy {
     if (this.artistas.includes(artistFound) ){
       const albumres = new albummod.Album( params.name, params.year);
       this.albums.push(albumres);
-      albummod.albumres.associateArtist(artistFound);
-      artistmod.artistFound.addAnAlbum(albumres);
+      albumres.associateArtist(artistFound);
+      artistFound.addAnAlbum(albumres);
     }
     else{
       console.log('No existe el artista '+artistName);
@@ -152,11 +151,13 @@ class UNQfy {
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
-  /*
+  
+  //Artista,Track, Album, PlayList
   artistmod,
   albummod,
   trackmod,
   playListmod
-  */
+
 };
+
 

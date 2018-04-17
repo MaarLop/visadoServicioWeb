@@ -1,7 +1,7 @@
 
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
-const unqmod = require('./unqfy');
+const unqmod = require('./unqfy').default;
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename) {
@@ -24,8 +24,8 @@ function main() {
   process.argv.forEach(argument => console.log(argument));
 }
 
-unqmod.addArtistaddArtist(process.argv);
 
 main();
+
 
 

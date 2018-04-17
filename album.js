@@ -6,8 +6,13 @@ class Album{
     this.artist;
     this.tracks=[];
   }
+ 
   associateArtist(artista){
     this.artist= artista;
+  }
+
+  addATrack(track){
+    this.tracks.push(track);
   }
 }
 
