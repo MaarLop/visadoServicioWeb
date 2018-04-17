@@ -14,8 +14,6 @@ class UNQfy {
 
   constructor (){
     this.artistas = [];
-    this.tracks = [];
-    this.albums = [];
     this.playlists = [];
   }
 
@@ -29,7 +27,7 @@ class UNQfy {
 
   getTracksMatchingArtist(artistName) {
     const artistFound = this.getArtistByName(artistName);
-    const albumsOfArtist = artistmod.artistFound.albumes;
+    const albumsOfArtist = artistFound.albumes;
     let traksOfArtist=[];
     albumsOfArtist.forEach(alb => {
       traksOfArtist.push (alb.tracks);
@@ -57,7 +55,6 @@ class UNQfy {
     const artistFound= this.getArtistByName(artistName);
     if (this.artistas.includes(artistFound) ){
       const albumres = new albummod.Album( params.name, params.year);
-      this.albums.push(albumres);
       albumres.associateArtist(artistFound);
       artistFound.addAnAlbum(albumres);
     }
@@ -72,6 +69,7 @@ class UNQfy {
        params.duration (number)
        params.genres (lista de strings)
   */
+ //albumName, { name: trackName, duration: trackDuraction, genres: trackGenero 
   addTrack(albumName, params) {
     /* El objeto track creado debe soportar (al menos) las propiedades:
          name (string),
@@ -79,11 +77,11 @@ class UNQfy {
          genres (lista de strings)
     */
     const albumFound = this.getAlbumByName(albumName);
-    if (this.albums.includes(albumFound)){
-      const trackFound =new trackmod.Track(params.name, params.duration, params.genero);
-      this.tracks.push(trackFound);
-      trackFound.associateAlbum(albumFound);
-      albumFound.addATrack(trackFound);
+    let artista= this.getArtistByName(albumFound.getArtistName());
+    if (this.artistas.includes(artista)&& artista.haveAlbum(albumFound)){
+      const newTrack =new trackmod.Track(params.name, params.duration, params.genres);
+      newTrack.associateAlbum(albumFound);
+      albumFound.addATrack(newTrack);
     }
     else{
       console.log('No existe album '+ albumName);
@@ -99,20 +97,28 @@ class UNQfy {
     return (artistFound);
   }
 
-  getAlbumByName(name) {
-    const albumFound = this.albums.find( (a) => {
-      const titleOfAlbumIterator= a.name;
-      return (name === titleOfAlbumIterator);
-    });
-    return (albumFound);
-  }
+  getAlbumByName(name) {   
+    let artistaCon= this.artistas.find ((art)=>{
+      return art.haveAlbumWithName(name);
+    })
+    let artista= this.getArtistByName(artistaCon.name);
+    return artista.albumConNombre(name);
+
+ }
 
   getTrackByName(name) {
-    const trackFound = this.tracks.find( (t) => {
-      const titleOfTrackIterator= t.name;
-      return (name === titleOfTrackIterator);
+    let artistaQueTieneAlbumConTrack= this.artistas.find((art)=>{
+      return art.haveAlbumWith(name);
     });
-    return (trackFound);
+    let artista= this.getArtistByName(artistaQueTieneAlbumConTrack.name);
+    let res= artista.getTrackWith(name);
+    let track= new trackmod.Track (res.name, res.duration, res.genres);
+    return track; 
+  }
+
+  getAlbumsOfArtist(art){
+    let artis = this.getAlbumByName(art.name);
+    return artis.albumes;
   }
 
   getPlaylistByName(name) {
@@ -129,7 +135,14 @@ class UNQfy {
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist
     */
     const list = new playListmod.PlayList (name, maxDuration, genresToInclude);
-    playListmod.list.push(this.getTracksMatchingGenres(genresToInclude));
+    let dur= maxDuration;
+      genresToInclude.forEach ((g)=>{
+        if (dur>0 ){
+          list.push(this.getTracksMatchingGenres(g));
+          lis.cortarPorDuracion();
+          dur= dur - list.getTracksDuration();
+        }
+      });
     this.playlists.push (list);
 
 

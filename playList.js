@@ -18,6 +18,13 @@ class PlayList{
             }
         });
     }
+    getTracksDuration(){
+        let d= 0;
+        this.tracks.forEach((t)=>{
+            return d+ t.duracion;
+        })
+        return d;
+    }
 }
 module.export={
     PlayList

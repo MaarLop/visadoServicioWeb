@@ -16,7 +16,7 @@ function createAndAddAlbum(unqfy, artistName, albumName, albumYear) {
 }
 
 function createAndAddTrack(unqfy, albumName, trackName, trackDuraction, trackGenero) {
-  unqfy.addTrack(albumName, { name: trackName, duration: trackDuraction, genro: trackGenero });
+  unqfy.addTrack(albumName, { name: trackName, duration: trackDuraction, genres: trackGenero });
   return unqfy.getTrackByName(trackName);
 }
 
@@ -43,40 +43,41 @@ describe('Add, remove and filter data', () => {
     assert.equal(album.year, 1987);
   });
 
-  // it('should add a track to an album', () => {
-  //   createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-  //   createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
-  //   const track = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, 'rock');
+   it('should add a track to an album', () => {
+     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
+     const track = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, 'rock');
+     
+     assert.equal(track.name, 'Welcome to the jungle');
+     assert.strictEqual(track.duration, 200);
+     assert.equal(track.genres,'rock');
+     
+   });
 
-  //   assert.equal(track.name, 'Welcome to the jungle');
-  //   assert.strictEqual(track.duration, 200);
-  //   assert.equal(track.genero,'rock');
-  // });
+/*  
 
-//  
+   it('should get all tracks matching artist', () => {
+     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
+     const t1 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+     const t2 = createAndAddTrack(unqfy, 'Appetite for Destruction', "It's so easy", 200, ['rock', 'hard rock']);
+     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Use Your Illusion I', 1992);
+     const t3 = createAndAddTrack(unqfy, 'Use Your Illusion I', "Don't Cry", 500, ['rock', 'hard rock']);
 
-//   it('should get all tracks matching artist', () => {
-//     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-//     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
-//     const t1 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-//     const t2 = createAndAddTrack(unqfy, 'Appetite for Destruction', "It's so easy", 200, ['rock', 'hard rock']);
-//     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Use Your Illusion I', 1992);
-//     const t3 = createAndAddTrack(unqfy, 'Use Your Illusion I', "Don't Cry", 500, ['rock', 'hard rock']);
+     createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+     createAndAddAlbum(unqfy, 'Michael Jackson', 'Thriller', 1987);
+     createAndAddTrack(unqfy, 'Thriller', 'Thriller', 200, ['pop', 'movie']);
+     createAndAddTrack(unqfy, 'Thriller', 'Another song', 500, ['classic']);
+     createAndAddTrack(unqfy, 'Thriller', 'Another song II', 500, ['movie']);
 
-//     createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
-//     createAndAddAlbum(unqfy, 'Michael Jackson', 'Thriller', 1987);
-//     createAndAddTrack(unqfy, 'Thriller', 'Thriller', 200, ['pop', 'movie']);
-//     createAndAddTrack(unqfy, 'Thriller', 'Another song', 500, ['classic']);
-//     createAndAddTrack(unqfy, 'Thriller', 'Another song II', 500, ['movie']);
+     const matchingTracks = unqfy.getTracksMatchingArtist(artist);
 
-//     const matchingTracks = unqfy.getTracksMatchingArtist(artist);
-
-//     assert.isArray(matchingTracks);
-//     assert.lengthOf(matchingTracks, 3);
-//     assert.isTrue(matchingTracks.includes(t1));
-//     assert.isTrue(matchingTracks.includes(t2));
-//     assert.isTrue(matchingTracks.includes(t3));
-//   });
+     assert.isArray(matchingTracks);
+     assert.lengthOf(matchingTracks, 3);
+     assert.isTrue(matchingTracks.includes(t1));
+     assert.isTrue(matchingTracks.includes(t2));
+     assert.isTrue(matchingTracks.includes(t3));
+   });
 
 //   it.skip('loaded instance should  have the same data as the original one', () => {
 //     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
@@ -112,27 +113,28 @@ describe('Add, remove and filter data', () => {
 //   beforeEach(() => {
 //     unqfy = new libunqfy.UNQfy();
 //   });
+*/
 
-//   it('should create a playlist as requested', () => {
-//     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-//     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
-//     const t1 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
-//     createAndAddTrack(unqfy, 'Appetite for Destruction', "Sweet Child o' Mine", 1500, ['rock', 'hard rock', 'pop', 'movie']);
+ /*  it('should create a playlist as requested', () => {
+     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
+     const t1 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+     createAndAddTrack(unqfy, 'Appetite for Destruction', "Sweet Child o' Mine", 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
-//     createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
-//     createAndAddAlbum(unqfy, 'Michael Jackson', 'Thriller', 1987);
-//     const t2 = createAndAddTrack(unqfy, 'Thriller', 'Thriller', 200, ['pop', 'movie']);
-//     const t3 = createAndAddTrack(unqfy, 'Thriller', 'Another song', 500, ['pop']);
-//     const t4 = createAndAddTrack(unqfy, 'Thriller', 'Another song II', 500, ['pop']);
+     createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+     createAndAddAlbum(unqfy, 'Michael Jackson', 'Thriller', 1987);
+     const t2 = createAndAddTrack(unqfy, 'Thriller', 'Thriller', 200, ['pop', 'movie']);
+     const t3 = createAndAddTrack(unqfy, 'Thriller', 'Another song', 500, ['pop']);
+     const t4 = createAndAddTrack(unqfy, 'Thriller', 'Another song II', 500, ['pop']);
 
-//     unqfy.addPlaylist('my playlist', ['pop', 'rock'], 1400);
-//     const playlist = unqfy.getPlaylistByName('my playlist');
+     unqfy.addPlaylist('my playlist', ['pop', 'rock'], 1400);
+     const playlist = unqfy.getPlaylistByName('my playlist');
 
-//     assert.equal(playlist.name, 'my playlist');
-//     assert.isAtMost(playlist.duration(), 1400);
-//     assert.isTrue(playlist.hasTrack(t1));
-//     assert.isTrue(playlist.hasTrack(t2));
-//     assert.isTrue(playlist.hasTrack(t3));
-//     assert.isTrue(playlist.hasTrack(t4));
-//   });
+     assert.equal(playlist.name, 'my playlist');
+     assert.isAtMost(playlist.duration(), 1400);
+     assert.isTrue(playlist.hasTrack(t1));
+     assert.isTrue(playlist.hasTrack(t2));
+     assert.isTrue(playlist.hasTrack(t3));
+     assert.isTrue(playlist.hasTrack(t4));
+   });*/
 });
