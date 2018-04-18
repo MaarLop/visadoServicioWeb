@@ -7,7 +7,7 @@ const albummod = require('./album.js');
 
 const trackmod = require( './track.js');
 
-const playListmod = require ('./playList.js');
+const listaRepmod = require('./listaReproduccion.js');
 
 
 class UNQfy {
@@ -19,10 +19,20 @@ class UNQfy {
 
   getTracksMatchingGenres(gen) {
     // Debe retornar todos los tracks que contengan alguno de los generos en el parametro genres
-    const traksFilter= this.tracks.filter( (tr) => {
-      return( trackmod.tr.genero === gen);       
-    });
+    let traksFilter= this.getTracks();
+    traksFilter.filter((t)=>{
+      return t.genres === gen;
+    })
     return traksFilter;
+  }
+  getTracks(){
+    const tracks=[];
+    this.artistas.forEach((ar)=>{
+      tracks.push(this.getTracksMatchingArtist(ar))
+    });
+    return tracks.reduce(function (t1,t2){
+      return t1.concat(t2);
+    })
   }
 
   getTracksMatchingArtist(artist) {
@@ -134,9 +144,10 @@ class UNQfy {
   }
 
   getPlaylistByName(name) {
-    const list = this.playlists.find( (l) => {
-      return (playListmod.l.playlistName === name);
+    let list = this.playlists.find( (l) => {
+      return (l.name === name);
     });
+
     return ( list);
   }
 
@@ -145,19 +156,17 @@ class UNQfy {
       * una propiedad name (string)
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist
-    */
-    const list = new playListmod.PlayList (name, maxDuration, genresToInclude);
-    let dur= maxDuration;
+    
+    );*/
+    let playlist = new listaRepmod.ListaReproduccion(name, genresToInclude, maxDuration);
+
       genresToInclude.forEach ((g)=>{
-        if (dur>0 ){
-          list.push(this.getTracksMatchingGenres(g));
-          lis.cortarPorDuracion();
-          dur= dur - list.getTracksDuration();
+        if (playlist.tiempoRestante()> 0 ){
+          playlist.addTracks(this.getTracksMatchingGenres(g));
         }
+      this.playlists.push(playlist)
       });
-    this.playlists.push (list);
-
-
+      
   }
 
   save(filename = 'unqfy.json') {
@@ -167,7 +176,9 @@ class UNQfy {
   static load(filename = 'unqfy.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artista,Track, Album, PlayList ];
+    //, Artista,Track, Album, ListaReproduccion
+    //const artista = Object.create(artistmod.Artista.prototype);
+    const classes = [UNQfy, artistmod.Artista.prototype];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }
@@ -176,13 +187,10 @@ class UNQfy {
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
-  
-  //Artista,Track, Album, PlayList
   artistmod,
   albummod,
   trackmod,
-  playListmod
-
+  listaRepmod
 };
 
 
