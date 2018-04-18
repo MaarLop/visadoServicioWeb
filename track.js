@@ -1,13 +1,13 @@
 class Track{
 
-    constructor (nombre, duracion, genres){
+    constructor (nombre, duracion, gen){
       this.name= nombre;
       this.duration= duracion;
-      this.genres= genres;
+      this.genres= gen;
       this.album;
     }
-    associateAlbum(album){
-      this.album= album;
+    associateAlbum(alb){
+      this.album= alb;
     }
   }
   

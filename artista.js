@@ -5,12 +5,19 @@ class Artista{
     this.albumes = [];
     this.country = pais;
   }
+
+  getName(){
+    return this.name;
+  }
+
+  getAlbumes(){
+    return this.albumes;
+  }
+
   addAnAlbum(album){
     this.albumes.push(album);
   }
-  haveAlbum(album){
-    return this.albumes.includes(album);
-  }
+
   haveAlbumWithName(nombre){
     return this.albumes.some(function(al){
         return( al.name === nombre);
@@ -21,15 +28,16 @@ class Artista{
       return al.name === nombre;
     })
   }
-  haveAlbumWith(name){
+  haveTrackWith(name){
     return this.albumes.some(function(alb){
       return alb.haveTrack(name);
     });
   }
-  getTrackWith(name){
-    return this.albumes.find((al)=>{
-      return al.getTrackWithName(name);
+  getTrackWith(titulo){
+    let albumFound= this.albumes.find((al)=>{
+      return al.getTrackWithName(titulo);
     });
+    return albumFound.getTrackWithName(titulo);
   }
 }
 module.exports = {

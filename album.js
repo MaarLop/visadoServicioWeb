@@ -8,7 +8,11 @@ class Album{
   }
  
   getArtistName(){
-    return this.artist.name;
+    return this.artist.getName();
+  }
+
+  getTracks(){
+    return this.tracks;
   }
   
   associateArtist(artista){
@@ -23,9 +27,9 @@ class Album{
       return track.name===name;
     });
   }
-  getTrackWithName(name){
+  getTrackWithName(titulo){
     return this.tracks.find((t)=>{
-      return t.name===name;
+      return t.name===titulo;
     });
   }
 }

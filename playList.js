@@ -1,8 +1,8 @@
 class PlayList{
-    constructor (nombre, duracion, genero){
+    constructor (nombre, duracion, generos){
         this.playlistName = nombre;
         this.duration = duracion;
-        this.genero = genero;
+        this.generos = generos;
         this.tracks = [];
     }
     addTrack(track){

@@ -25,16 +25,23 @@ class UNQfy {
     return traksFilter;
   }
 
-  getTracksMatchingArtist(artistName) {
-    const artistFound = this.getArtistByName(artistName);
-    const albumsOfArtist = artistFound.albumes;
-    let traksOfArtist=[];
+  getTracksMatchingArtist(artist) {
+    const albumsOfArtist = this.getDiscography(artist.name);
+    let tracksOfArtist=[];
     albumsOfArtist.forEach(alb => {
-      traksOfArtist.push (alb.tracks);
+      tracksOfArtist.push (alb.getTracks());
     });
-    return traksOfArtist;
-  }
+    let tracksReduce=tracksOfArtist.reduce(function (lis1, lis2){
+      return lis1.concat(lis2);
+    })
 
+    return tracksReduce;
+  }
+  getDiscography(nameOfArtist){
+    const artistFound = this.getArtistByName(nameOfArtist);
+    const discography = artistFound.getAlbumes();
+    return discography;
+  }
 
   /* Debe soportar al menos:
      params.name (string)
@@ -77,8 +84,10 @@ class UNQfy {
          genres (lista de strings)
     */
     const albumFound = this.getAlbumByName(albumName);
-    let artista= this.getArtistByName(albumFound.getArtistName());
-    if (this.artistas.includes(artista)&& artista.haveAlbum(albumFound)){
+    const artista= this.getArtistByName(albumFound.getArtistName());
+
+    if (this.artistas.includes(artista) && artista.haveAlbumWithName(albumName)){
+
       const newTrack =new trackmod.Track(params.name, params.duration, params.genres);
       newTrack.associateAlbum(albumFound);
       albumFound.addATrack(newTrack);
@@ -108,11 +117,14 @@ class UNQfy {
 
   getTrackByName(name) {
     let artistaQueTieneAlbumConTrack= this.artistas.find((art)=>{
-      return art.haveAlbumWith(name);
+
+      return art.haveTrackWith(name);
     });
+
     let artista= this.getArtistByName(artistaQueTieneAlbumConTrack.name);
-    let res= artista.getTrackWith(name);
-    let track= new trackmod.Track (res.name, res.duration, res.genres);
+
+    let track = artista.getTrackWith(name);
+
     return track; 
   }
 
