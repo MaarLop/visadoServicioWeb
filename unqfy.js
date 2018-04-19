@@ -59,7 +59,9 @@ class UNQfy {
   */
   addArtist(param) {
     // El objeto artista creado debe soportar (al menos) las propiedades name (string) y country (string)
-    this.artistas.push( new artistmod.Artista(param.name, param.country));
+    let artist = new artistmod.Artista(param.name, param.country);
+    this.artistas.push( artist);
+    console.log('Artista agregado')
   }
 
 
@@ -69,11 +71,12 @@ class UNQfy {
   */
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
-    const artistFound= this.getArtistByName(artistName);
+     const artistFound= this.getArtistByName(artistName);
     if (this.artistas.includes(artistFound) ){
       const albumres = new albummod.Album( params.name, params.year);
       albumres.associateArtist(artistFound);
       artistFound.addAnAlbum(albumres);
+      console.log(' Album agregado')
     }
     else{
       console.log('No existe el artista '+artistName);
@@ -101,6 +104,7 @@ class UNQfy {
       const newTrack =new trackmod.Track(params.name, params.duration, params.genres);
       newTrack.associateAlbum(albumFound);
       albumFound.addATrack(newTrack);
+      console.log(' Track agregado')
     }
     else{
       console.log('No existe album '+ albumName);
@@ -114,6 +118,7 @@ class UNQfy {
       return (name === nameOfArtistIterator );
     });
     return (artistFound);
+    console.log(artistFound);
   }
 
   getAlbumByName(name) {   
@@ -121,7 +126,9 @@ class UNQfy {
       return art.haveAlbumWithName(name);
     })
     let artista= this.getArtistByName(artistaCon.name);
-    return artista.albumConNombre(name);
+    let album= artista.albumConNombre(name);
+    return album;
+    console.log(album);
 
  }
 
@@ -136,11 +143,14 @@ class UNQfy {
     let track = artista.getTrackWith(name);
 
     return track; 
+    
+    console.log(track);
   }
 
   getAlbumsOfArtist(art){
     let artis = this.getAlbumByName(art.name);
     return artis.albumes;
+    console.log (artis.albumes);
   }
 
   getPlaylistByName(name) {
@@ -149,6 +159,7 @@ class UNQfy {
     });
 
     return ( list);
+    console.log(list);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
@@ -166,6 +177,7 @@ class UNQfy {
         }
       this.playlists.push(playlist)
       });
+      console.log (' Playlist agregada')
       
   }
 
@@ -176,9 +188,7 @@ class UNQfy {
   static load(filename = 'unqfy.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    //, Artista,Track, Album, ListaReproduccion
-    //const artista = Object.create(artistmod.Artista.prototype);
-    const classes = [UNQfy, artistmod.Artista.prototype];
+    const classes = [UNQfy, artistmod.Artista.prototype,trackmod.Track.prototype, albummod.Album.prototype, listaRepmod.ListaReproduccion.prototype];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }
