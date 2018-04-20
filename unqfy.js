@@ -96,8 +96,8 @@ class UNQfy {
          duration (number),
          genres (lista de strings)
     */
-    const albumFound = this.getAlbumByName(albumName);
-    const artista= this.getArtistByName(albumFound.getArtistName());
+    let albumFound = this.getAlbumByName(albumName);
+    let artista= this.getArtistByName(albumFound.getArtistName());
 
     if (this.artistas.includes(artista) && artista.haveAlbumWithName(albumName)){
 
@@ -113,23 +113,21 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-    const artistFound = this.artistas.find( (a) => {
+    let artistFound = this.artistas.find( (a) => {
       const nameOfArtistIterator= a.name;
       return (name === nameOfArtistIterator );
     });
     return (artistFound);
-    console.log(artistFound);
   }
 
   getAlbumByName(name) {   
-    let artistaCon= this.artistas.find ((art)=>{
-      return art.haveAlbumWithName(name);
-    })
-    let artista= this.getArtistByName(artistaCon.name);
-    let album= artista.albumConNombre(name);
-    return album;
-    console.log(album);
-
+    // let artistaCon
+  return (this.artistas.find( (a) => {
+                return a.haveAlbumWithName(name);
+          })).albumConNombre(name);
+    // let artista= this.getArtistByName(artistaCon.name);
+    // let album= artista.albumConNombre(name);
+    // return album;
  }
 
   getTrackByName(name) {
@@ -143,23 +141,18 @@ class UNQfy {
     let track = artista.getTrackWith(name);
 
     return track; 
-    
-    console.log(track);
   }
 
   getAlbumsOfArtist(art){
     let artis = this.getAlbumByName(art.name);
     return artis.albumes;
-    console.log (artis.albumes);
   }
 
   getPlaylistByName(name) {
     let list = this.playlists.find( (l) => {
       return (l.name === name);
     });
-
     return ( list);
-    console.log(list);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
@@ -188,7 +181,7 @@ class UNQfy {
   static load(filename = 'unqfy.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, artistmod.Artista.prototype, albummod.Album.prototype, trackmod.Track.prototype, listaRepmod.ListaReproduccion.prototype];
+    const classes = [UNQfy, artistmod.Artista, albummod.Album, trackmod.Track, listaRepmod.ListaReproduccion];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }

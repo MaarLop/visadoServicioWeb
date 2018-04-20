@@ -59,22 +59,22 @@ switch (command ){
 
   case 'getArtistByName':
   let nombreArtista = process.argv[3];
-  unqfy.getArtistByName(nombreArtista);
+  console.log(unqfy.getArtistByName(nombreArtista));
   break;
 
   case  'getAlbumByName':
   let nombreAlbum = process.argv[3];
-  unqfy.getAlbumByName(nombreAlbum);
+  console.log(unqfy.getAlbumByName(nombreAlbum));
   break;
 
   case 'getTrackByName':
   let nombreDeTrack = process.argv[3];
-  unqfy.getTrackByName(nonombreDeTrackmbre);
+  console.log(unqfy.getTrackByName(nonombreDeTrackmbre));
   break;
 
   case 'getPlaylistByName':
   let playListName = process.argv[3];
-  unqfy.getPlaylistByName(playListName);
+  console.log(unqfy.getPlaylistByName(playListName));
   break;
 
   }
