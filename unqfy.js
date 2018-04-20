@@ -188,7 +188,7 @@ class UNQfy {
   static load(filename = 'unqfy.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, artistmod.Artista.prototype,trackmod.Track.prototype, albummod.Album.prototype, listaRepmod.ListaReproduccion.prototype];
+    const classes = [UNQfy, artistmod.Artista.prototype, albummod.Album.prototype, trackmod.Track.prototype, listaRepmod.ListaReproduccion.prototype];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }
