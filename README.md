@@ -27,11 +27,12 @@ getArtisByName devuelve todo el contenido cargado en el sistema de ese artista, 
 
 getAlbumByName devuelve el contenido de un albúm con los tracks que contiene y el artista que lo creo. Toma como parámetro el nombre del albúm
 
-* `node main.js getTrackByName 'tackUno'`
+* `node main.js getTrackByName 'trackUno'`
 
 getTrackByName toma como parámetro el nombre del track y  devuelve el contenido del mismo con sus respectivos datos, como son la duración y el género al que pertenece.
 
-*`node main.js getPlaylistByName ´miListadeReproduccion´`
+* `node main.js getPlaylistByName 'miListadeReproduccion'`
+
 getPlaylistByName toma como parámetro el nombre de la lista de reproducción que deseamos buscar y devuelve la duración y los genéros que contiene. 
 
 
