@@ -15,9 +15,9 @@ Ejemplos de comandos de comandos para la prueba del proyecto:
 
  addTrack agrega un track a un disco determinado. Los parametros son el nombre del disco al que se le quiere agregar el track, el nombre  del mismo, su duración y el género al que pertenece.
 
-* `node main.js addPlaylist 'miListaDeReproducion' 'rock' 'pop' 2000`
+* `node main.js addPlaylist 'miListaDeReproducion' 2000 'rock' 'pop' `
 
-addPlaylist genera una lista de reproducción nueva. Los parametros que toma son el nombre que le querramos dar, los generos que deseemos con su respectiva duración
+addPlaylist genera una lista de reproducción nueva. Los parametros que toma son el nombre que le querramos dar, la duracion y los generos que deseemos.
 
 * `node main.js getArtistByName 'shakira'`
 
