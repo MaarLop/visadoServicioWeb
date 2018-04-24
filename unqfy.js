@@ -19,12 +19,22 @@ class UNQfy {
 
   getTracksMatchingGenres(gen) {
     // Debe retornar todos los tracks que contengan alguno de los generos en el parametro genres
+    let traksFilter= [];
+    gen.forEach((g)=>{
+      traksFilter.push(this.trackWithGenre(g));
+    });
+    return traksFilter.reduce(function (t1,t2){
+      return t1.concat(t2);
+    });
+  }
+  trackWithGenre(g){
     let traksFilter= this.getTracks();
     traksFilter.filter((t)=>{
-      return t.genres === gen;
-    })
+      return t.genres === g;
+    });
     return traksFilter;
   }
+
   getTracks(){
     const tracks=[];
     this.artistas.forEach((ar)=>{
@@ -32,7 +42,7 @@ class UNQfy {
     });
     return tracks.reduce(function (t1,t2){
       return t1.concat(t2);
-    })
+    });
   }
 
   getTracksMatchingArtist(artist) {
@@ -43,7 +53,7 @@ class UNQfy {
     });
     let tracksReduce=tracksOfArtist.reduce(function (lis1, lis2){
       return lis1.concat(lis2);
-    })
+    });
 
     return tracksReduce;
   }
@@ -121,18 +131,13 @@ class UNQfy {
   }
 
   getAlbumByName(name) {   
-    // let artistaCon
   return (this.artistas.find( (a) => {
                 return a.haveAlbumWithName(name);
           })).albumConNombre(name);
-    // let artista= this.getArtistByName(artistaCon.name);
-    // let album= artista.albumConNombre(name);
-    // return album;
  }
 
   getTrackByName(name) {
     let artistaQueTieneAlbumConTrack= this.artistas.find((art)=>{
-
       return art.haveTrackWith(name);
     });
 
@@ -163,15 +168,9 @@ class UNQfy {
     
     );*/
     let playlist = new listaRepmod.ListaReproduccion(name, genresToInclude, maxDuration);
-
-      genresToInclude.forEach ((g)=>{
-        if (playlist.tiempoRestante()> 0 ){
-          playlist.addTracks(this.getTracksMatchingGenres(g));
-        }
-      this.playlists.push(playlist)
-      });
-      console.log (' Playlist agregada')
-      
+    playlist.addTracks(this.getTracksMatchingGenres(genresToInclude));
+    this.playlists.push(playlist)
+    console.log (' Playlist agregada')  
   }
 
   save(filename = 'unqfy.json') {

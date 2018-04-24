@@ -43,7 +43,7 @@ switch (command ){
   case 'addTrack':
   let album = process.argv[3];
   let tituloTrack = process.argv[4];
-  let duracion = process.argv[5];
+  let duracion = parseInt(process.argv[5]);
   let genero = process.argv[6];
   unqfy.addTrack(album,{name:tituloTrack,duration:duracion, genres: genero});
   saveUNQfy(unqfy, 'unqfy.json');
@@ -51,8 +51,8 @@ switch (command ){
 
   case 'addPlaylist':
   let nombrePlayList = process.argv[3];
-  let generos= process.argv[4];
-  let duracionMax= process.argv[5];
+  let duracionMax = parseInt(process.argv[4]);
+  let generos = process.argv.slice(5)
   unqfy.addPlaylist(nombrePlayList,generos,duracionMax);
   saveUNQfy(unqfy, 'unqfy.json');
   break;
@@ -69,7 +69,7 @@ switch (command ){
 
   case 'getTrackByName':
   let nombreDeTrack = process.argv[3];
-  console.log(unqfy.getTrackByName(nonombreDeTrackmbre));
+  console.log(unqfy.getTrackByName(nombreDeTrack));
   break;
 
   case 'getPlaylistByName':
@@ -78,7 +78,6 @@ switch (command ){
   break;
 
   }
-  
 }
 
 main();
