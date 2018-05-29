@@ -36,3 +36,4 @@ getTrackByName toma como parámetro el nombre del track y  devuelve el contenido
 getPlaylistByName toma como parámetro el nombre de la lista de reproducción que deseamos buscar y devuelve la duración y los genéros que contiene. 
 
 
+![unqfy](https://user-images.githubusercontent.com/31372437/39194362-ed573db6-47b3-11e8-85d5-77df68fc36b8.png)
