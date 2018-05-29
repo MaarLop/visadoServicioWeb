@@ -9,6 +9,8 @@ const trackmod = require( './track.js');
 
 const listaRepmod = require('./listaReproduccion.js');
 
+const generateCredits= require ('./generateSpotifyCredentials');
+
 
 class UNQfy {
 
@@ -29,10 +31,9 @@ class UNQfy {
   }
   trackWithGenre(g){
     let traksFilter= this.getTracks();
-    traksFilter.filter((t)=>{
+    return traksFilter.filter((t)=>{
       return t.genres === g;
     });
-    return traksFilter;
   }
 
   getTracks(){

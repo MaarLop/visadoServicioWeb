@@ -1,7 +1,6 @@
 const unqfy= require ('./unqfy.js');
 
 const url_base= 'https://api.spotify.com/v1/artists/';
-
 getAlbumForArtist(artistid){
     const rp = require('request-promise');
     const options = {
