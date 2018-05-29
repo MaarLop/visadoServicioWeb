@@ -6,7 +6,9 @@ class Album{
     this.artist;
     this.tracks=[];
   }
- 
+  toJson(){
+    return {nombre: this.name, year: this.year}
+  }
   getArtistName(){
     return this.artist.getName();
   }

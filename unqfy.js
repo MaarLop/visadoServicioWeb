@@ -9,7 +9,7 @@ const trackmod = require( './track.js');
 
 const listaRepmod = require('./listaReproduccion.js');
 
-const generateCredits= require ('./generateSpotifyCredentials');
+//const generateCredits= require ('./generateSpotifyCredentials');
 
 
 class UNQfy {
@@ -174,6 +174,14 @@ class UNQfy {
     console.log (' Playlist agregada')  
   }
 
+  ////
+  getAllArtist(){
+    //return this.artistas;
+    let x=[]
+    this.artistas.forEach((a)=>
+                              x.push(a.toJson()))
+    return x;
+  }
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
   }

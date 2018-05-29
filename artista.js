@@ -5,7 +5,9 @@ class Artista{
     this.albumes = [];
     this.country = pais;
   }
-
+toJson(){
+  return {nombre: this.name, country: this.country}
+}
   getName(){
     return this.name;
   }
