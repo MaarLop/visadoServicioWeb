@@ -3769,3 +3769,7 @@ package.json
 node_modules/verror/lib/verror.js
 package.json
 package-lock.json
+package.json
+package-lock.json
+spotifyCreds.json
+node_modules/yallist/package.json

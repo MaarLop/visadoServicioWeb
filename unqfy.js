@@ -1,5 +1,5 @@
 
-const picklejs = require('picklejs');
+const picklejs = require('./picklejs');
 
 const artistmod = require('./artista.js');
 
@@ -8,8 +8,6 @@ const albummod = require('./album.js');
 const trackmod = require( './track.js');
 
 const listaRepmod = require('./listaReproduccion.js');
-
-//const generateCredits= require ('./generateSpotifyCredentials');
 
 
 class UNQfy {
