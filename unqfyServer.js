@@ -34,9 +34,6 @@ app.get( '/', (req,res)=>{
     res.send('received');
 })
 
-router.get('/', function (req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -54,21 +51,30 @@ router.route('/artists/:id').get (function (req,res){
 });
 
 router.route('/artists/:id').delete(  function(req,res){
-    res.json( lastUnqfy.deleteArtist(req.params.id));
+    lastUnqfy.deleteArtist(req.params.id);
+    res.json({
+        "success": true,
+        "mensage": "artist deleted successfully"
+    })
     saveUNQfy(lastUnqfy, 'unqfy.json');
 })
 //buscar artista por nombre
 router.route('/artists?name=:nombre').get(  function(req,res){
-   // res.json( lastUnqfy.deleteArtist(req.params.id));
     res.json( lastUnqfy.getArtistByPartOfAName(req.params.nombre) );
 })
 
 
 //agregar artista  con un json
-router.route('/artists/:id').delete(  function(req,res){
-    res.json( lastUnqfy.deleteArtist(req.params.id));
-    saveUNQfy(lastUnqfy, 'unqfy.json');
-})
+router.route('/artists').post( function (req,res){
+    let nameOfArt=req.body.name;
+    let countryOfArt=req.body.country;
+
+    lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt});
+    saveUNQfy(lastUnqfy,'unqfy.json');
+    res.json({
+        'success':true
+    });
+});
 
 
 
@@ -77,4 +83,4 @@ router.route('/artists/:id').delete(  function(req,res){
 
 
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Server started on port ' + port);

@@ -61,9 +61,8 @@ function getAlbumWithId(id){
         return JSON.parse(json);
         });
     }
-
-    module.exports= {
-        getAlbumForArtist,
-        popularAlbumForArtist,
-    }
+}
+module.exports= {
+    getAlbumForArtist,
+    popularAlbumForArtist,
 }
