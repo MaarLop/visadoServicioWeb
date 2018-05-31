@@ -2,7 +2,7 @@ let express = require('express');        // call express
 let app = express();                 // define our app using express
 let router = express.Router();
 let bodyParser = require('body-parser');
-
+const error=require('./APIerror');
 let port = process.env.PORT || 5000;        // set our port
 const fs = require('fs');
 const unqmod = require('./unqfy');
@@ -68,14 +68,29 @@ router.route('/artists?name=:nombre').get(  function(req,res){
 router.route('/artists').post( function (req,res){
     let nameOfArt=req.body.name;
     let countryOfArt=req.body.country;
-
-    lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt});
+    let artist= lastUnqfy.getAllArtist(nameOfArt);
+    if (!artist){
+        lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt});        
+    } else{
+    throw new error.ResourceAlreadyExists();
+    }
     saveUNQfy(lastUnqfy,'unqfy.json');
     res.json({
         'success':true
     });
 });
 
+function errorHandler(err,req, res, next){
+    console.error(err);
+    if (err instanceof error.APIerror){
+        res.status(err.status);
+        res.json({status:err.status, errorCode: errorCode})
+    }
+    else{
+        res.status(500);
+        res.json({status:500, errorCode: 'Internal server error'})
+    }
+}
 
 
 
