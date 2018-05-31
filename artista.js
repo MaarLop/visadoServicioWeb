@@ -1,13 +1,23 @@
 class Artista{
     
-  constructor (nombre, pais){
+  constructor (nombre, pais, _id){
     this.name = nombre;
+    this.id= _id
     this.albumes = [];
     this.country = pais;
   }
 toJson(){
-  return {nombre: this.name, country: this.country}
+  let albs= [];
+  this.albumes.forEach((a)=>{
+    let title= a.getTitle();
+    albs.push(title);
+  })
+  return {nombre: this.name, country: this.country, id: this.id, albums: albs}
 }
+  getId(){
+    return this.id;
+  }
+
   getName(){
     return this.name;
   }

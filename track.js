@@ -1,3 +1,5 @@
+const pepa= require('./musixmatchClient');
+
 class Track{
 
     constructor (nombre, duracion, gen){
@@ -5,9 +7,23 @@ class Track{
       this.duration= duracion;
       this.genres= gen;
       this.album;
+      this.lyric;
     }
     associateAlbum(alb){
       this.album= alb;
+    }
+
+    getTitle(){
+      return this.name;
+    }
+
+    getLyric(){
+      if (this.lyric == null){
+        this.lyric= getLyricTrack(this.getTitle(), this.album.getArtistName());
+      }
+      else{
+        return this.lyric;
+      }
     }
   }
   

@@ -7,8 +7,18 @@ class Album{
     this.tracks=[];
   }
   toJson(){
-    return {nombre: this.name, year: this.year}
+  let tr= [];
+  this.tracks.forEach((t)=>{
+    let title= t.getTitle();
+    tr.push(title);
+  })
+    return {nombre: this.name, year: this.year, tracks: tr}
   }
+
+  getTitle(){
+    return this.name;
+  }
+
   getArtistName(){
     return this.artist.getName();
   }

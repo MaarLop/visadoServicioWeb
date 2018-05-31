@@ -2,6 +2,7 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy');
+const spotifyClient= require('./spotifyClient')
 
 const spotifyclient= ('./spotifyClient')
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
@@ -89,7 +90,6 @@ switch (command ){
 
   }
 }
-
 main();
 
 

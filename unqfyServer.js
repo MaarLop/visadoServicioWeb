@@ -48,25 +48,27 @@ router.route('/artists').get(function (req, res) {
     res.json(lastUnqfy.getAllArtist());
 });
 
-router.route('/artists/:nombre_artista', (req,res)=>{
-   let artist= lastUnqfy.getArtistByName(req.params.nombre_artista)
+router.route('/artists/:id').get (function (req,res){
+   let artist= lastUnqfy.getArtistById(req.params.id)
     res.json( artist.toJson() );
+});
+
+router.route('/artists/:id').delete(  function(req,res){
+    res.json( lastUnqfy.deleteArtist(req.params.id));
+    saveUNQfy(lastUnqfy, 'unqfy.json');
+})
+//buscar artista por nombre
+router.route('/artists?name=:nombre').get(  function(req,res){
+   // res.json( lastUnqfy.deleteArtist(req.params.id));
+    res.json( lastUnqfy.getArtistByPartOfAName(req.params.nombre) );
 })
 
 
-
-
-.get(function (req, res) {// /api/artist/id.
-    res.json(getUNQfy('unqfy.json').getAllArtist());
-    if (req.query)
-        res.json({ message: 'PONG!' });
-    else
-        res.json({ message: 'no mandaste el ping' });
-});
-
-
-
-
+//agregar artista  con un json
+router.route('/artists/:id').delete(  function(req,res){
+    res.json( lastUnqfy.deleteArtist(req.params.id));
+    saveUNQfy(lastUnqfy, 'unqfy.json');
+})
 
 
 

@@ -1,5 +1,5 @@
 
-const picklejs = require('./picklejs');
+const picklejs = require('./pickle.js');
 
 const artistmod = require('./artista.js');
 
@@ -68,7 +68,7 @@ class UNQfy {
   */
   addArtist(param) {
     // El objeto artista creado debe soportar (al menos) las propiedades name (string) y country (string)
-    let artist = new artistmod.Artista(param.name, param.country);
+    let artist = new artistmod.Artista(param.name, param.country, this.artistas.length);
     this.artistas.push( artist);
     console.log('Artista agregado')
   }
@@ -129,6 +129,15 @@ class UNQfy {
     return (artistFound);
   }
 
+  getArtistByPartOfAName(name){
+    let artistFound = []
+    artistFound=  this.artistas.filter( (a) => {
+      const nameOfArtistIterator= a.name;
+      return ( nameOfArtistIterator.search(name) );
+    });
+    return (artistFound[0]);
+  }
+
   getAlbumByName(name) {   
   return (this.artistas.find( (a) => {
                 return a.haveAlbumWithName(name);
@@ -180,6 +189,15 @@ class UNQfy {
                               x.push(a.toJson()))
     return x;
   }
+
+  getArtistById(nro_id){
+    return this.artistas[nro_id];
+  }
+
+  deleteArtist(nro_id){
+    delete this.artistas[nro_id];
+  }
+
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
   }
