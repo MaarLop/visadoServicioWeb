@@ -2,11 +2,8 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy');
-const {getAlbumForArtist}= require('./spotifyClient');
-const {popularAlbumForArtist}= require('./spotifyClient');
+const spotifyClient= require('./spotifyClient')
 
-
-const spotifyclient= ('./spotifyClient')
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename) {
   let unqfy = new unqmod.UNQfy();
@@ -84,11 +81,11 @@ switch (command ){
 
   case 'getAlbumForArtist':
   let nameOfSpotifyArtist= process.argv[3];
-  console.log(getAlbumsForArtist(nameOfSpotifyArtist));
+  console.log(spotifyClient.getAlbumForArtist(nameOfSpotifyArtist));
 
   case 'popularAlbumForArtist':
   let nameOfPopulateAlbum= process.argv[3];
-  console.log(popularAlbumForArtist(nameOfPopulateAlbum));
+  console.log(spotifyClient.popularAlbumForArtist(nameOfPopulateAlbum));
 
   }
 }
