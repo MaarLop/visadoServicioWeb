@@ -39,10 +39,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/api', router);
-
+app.use(errorHandler);
 //--------
 router.route('/artists').get(function (req, res) {
-    res.json(lastUnqfy.getAllArtist());
+    let lastUnq= getUNQfy('unqfy.json').getAllArtist();
+    res.json(lastUnq);
 });
 
 router.route('/artists/:id').get (function (req,res){
@@ -60,40 +61,49 @@ router.route('/artists/:id').delete(  function(req,res){
 })
 //buscar artista por nombre
 router.route('/artists?name=:nombre').get(  function(req,res){
-    res.json( lastUnqfy.getArtistByPartOfAName(req.params.nombre) );
+    res.json( lastUnqfy.getArtistByPartOfAName(req.query.name) );
 })
 
+router.get('/albums', (req, res) => {
+    const albums = model.unqfy
+      .findAlbumsByName(req.query.name)
+      .map(a => a.toJson());
+
+    res.json(albums);
+  });
 
 //agregar artista  con un json
-router.route('/artists').post( function (req,res){
+router.route('/artists').post( function (req,res,next){
     let nameOfArt=req.body.name;
     let countryOfArt=req.body.country;
-    let artist= lastUnqfy.getAllArtist(nameOfArt);
+    let artist= lastUnqfy.getArtistByName(nameOfArt);
+    console.log(artist);
     if (!artist){
-        lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt});        
-    } else{
-    throw new error.ResourceAlreadyExists();
+        lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt} );
+        res.json({
+            'success':true
+        });
+    }        
+    else{
+        next(new error.ResourceAlreadyExists());
+       
     }
     saveUNQfy(lastUnqfy,'unqfy.json');
-    res.json({
-        'success':true
-    });
+    
 });
 
 function errorHandler(err,req, res, next){
     console.error(err);
     if (err instanceof error.APIerror){
         res.status(err.status);
-        res.json({status:err.status, errorCode: errorCode})
+        res.json({status:err.status, errorCode: err.errorCode});
     }
-    else{
+    else
+    {
         res.status(500);
-        res.json({status:500, errorCode: 'Internal server error'})
+        res.json({status:500,errorCode:'Internal Server Error'})
     }
 }
-
-
-
 //-----------
 
 

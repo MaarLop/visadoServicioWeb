@@ -11,8 +11,8 @@ toJson(){
   this.albumes.forEach((a)=>{
     let title= a.getTitle();
     albs.push(title);
-  })
-  return {nombre: this.name, country: this.country, id: this.id, albums: albs}
+  });
+  return{nombre: this.name, country: this.country, id: this.id, albums: albs}
 }
   getId(){
     return this.id;

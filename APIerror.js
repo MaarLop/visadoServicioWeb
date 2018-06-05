@@ -1,20 +1,12 @@
 
 
 class APIerror extends Error {
-    constructor(name, statusCode, errorCode, message = null) {
-    super(message || name);
-    this.name = name;
+    constructor( statusCode, errorCode, message = null) {
+    super(message );
     this.status = statusCode;
     this.errorCode = errorCode;
     }
 }
-
-/*class InvalidInputError extends APIError {
-    constructor() {
-    super('InvalidInputError', 400, 'INVALID_INPUT_DATA');
-    }
-}*/
-
 class BadRequest extends APIerror{
     constructor(message=null){
         super(400, 'BAD REQUEST', message);

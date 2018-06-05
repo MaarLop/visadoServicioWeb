@@ -183,11 +183,11 @@ class UNQfy {
 
   ////
   getAllArtist(){
-    //return this.artistas;
-    let x=[]
-    this.artistas.forEach((a)=>
-                              x.push(a.toJson()))
-    return x;
+    let all_artistas=[]
+    for (let i=0; i< this.artistas.length; i++){
+        all_artistas.push(this.artistas[i].toJson())
+    }
+    return all_artistas;
   }
 
   getArtistById(nro_id){

@@ -1,4 +1,4 @@
-const pepa= require('./musixmatchClient');
+const musixmatchClient= require('./musixmatchClient');
 
 class Track{
 
@@ -19,7 +19,7 @@ class Track{
 
     getLyric(){
       if (this.lyric == null){
-        this.lyric= getLyricTrack(this.getTitle(), this.album.getArtistName());
+        this.lyric= musixmatchClient.getLyricTrack(this.getTitle(), this.album.getArtistName());
       }
       else{
         return this.lyric;
