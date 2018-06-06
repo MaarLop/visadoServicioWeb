@@ -87,6 +87,10 @@ switch (command ){
   let nameOfPopulateAlbum= process.argv[3];
   console.log(spotifyClient.popularAlbumForArtist(nameOfPopulateAlbum));
 
+  case 'getLyric':
+  // let trackToLyric= process.argv[3];
+  // console.log(unqfy.getTrackLyric(trackToLyric))
+  // saveUNQfy(unqfy, 'unqfy.json');
   }
 }
 main();

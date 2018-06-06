@@ -57,18 +57,20 @@ function popularAlbumForArtist(artistname){
         {
             url: url_base+'/artists/' + id+ '/top-tracks',
             headers: { Authorization: 'Bearer ' + access_token},
+            qs:
+            {
+                country: 'AR'
+            },
             json: true,
         };
         rp.get(options).then( (response) =>
         {
-            console.log(typeof response)
-            let track = response['tracks']
-            console.log(track)
-        //     let albumId = track['album'].id;
-        //     let alb= getAlbumWithId(albumId);
-        //    console.log (new Album ({name:alb['name'], year:alb['release_date']}));
+            let track = response['tracks'][0]
+            let alb = track['album'];
+            unqfy.addAlbum(artistname, {name:alb['name'], year:alb['release_date']});
+            console.log (unqfy.getJsonAlbumByName (alb['name']))
         });
-
+        saveUNQfy(unqfy, 'unqfy.json');
     })
 
 }
@@ -80,9 +82,9 @@ function getIdOfArtist(name){
         headers: { Authorization: 'Bearer ' + access_token},
         qs: 
         {
-                type: 'artist',
-                q: name,
-                limit:1
+            type: 'artist',
+            q: name,
+            limit:1
         },
         json: true,
     };
@@ -95,19 +97,6 @@ function getIdOfArtist(name){
      
 }
 
-function getAlbumWithId(id){
-    options = 
-    {
-        url: url_base+'/albums/' + id,
-        headers: { Authorization: 'Bearer ' + access_token},
-        json: true,
-    };
-       rp.get(options).then( (response) =>
-    {
-        let album= response;
-        return album;
-    });
-}
 module.exports= {
     getAlbumForArtist,
     popularAlbumForArtist,

@@ -198,6 +198,20 @@ class UNQfy {
     delete this.artistas[nro_id];
   }
 
+  getJsonAlbumByName(name) {   
+    let artistWithAlbum = (this.artistas.find( (a) => {
+                  return a.haveAlbumWithName(name);
+            }))
+    let albumFound = artistWithAlbum.albumConNombre(name);
+    return albumFound.toJson();
+   }
+
+   getTrackLyric(title){
+     let track= this.getTrackByName(title)
+      return track.getLyric()
+   }
+
+
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
   }
