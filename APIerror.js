@@ -12,11 +12,6 @@ class BadRequest extends APIerror{
         super(400, 'BAD REQUEST', message);
     }
 }
- class NotFoundErrror extends APIerror{
-     constructor(message=null){
-         super(404, 'RESOURCE NOT FOUND', message);
-     }
- }
  class RelatedResourceNotFoundError extends APIerror{
     constructor(message= null){
         super(404, 'RELATED RESOURCE NOT FOUND', message);
@@ -33,5 +28,5 @@ class InternalServerError extends APIerror{
     }
 }
 
-module.exports= {APIerror,BadRequest, NotFoundErrror, RelatedResourceNotFoundError, ResourceAlreadyExists,
+module.exports= {APIerror,BadRequest, RelatedResourceNotFoundError, ResourceAlreadyExists,
      InternalServerError };

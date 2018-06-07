@@ -15,10 +15,10 @@ function getLyricTrack(track_name, artist_name){
         const options= 
         {
             url: basic_url+ lookUpLyric,
-            headers: { Authorization: 'Bearer ' + api_key},
             qs:
             {
-                track_id: id
+                track_id: id,
+                apikey: api_key
             },
             json: true
         }
@@ -26,6 +26,7 @@ function getLyricTrack(track_name, artist_name){
         return rp.get(options).then ((response)=>
         {
             let lyric= response['body'].lyric_body;
+            return lyric;
         })
 
     })
@@ -35,7 +36,6 @@ function getTrackId(track_name,artist_name){
     options = 
     {
         url: basic_url+ lookUpTrack,
-        headers: { Authorization: 'Bearer ' + api_key},
         qs:
         {
             format: json,
@@ -43,7 +43,8 @@ function getTrackId(track_name,artist_name){
             q_track: track_name,
             q_artist: artist_name,
             f_has_lyrics: 0,
-            f_has_subtitle: 0
+            f_has_subtitle: 0,
+            apikey: api_key
         },
         json: true,
     };

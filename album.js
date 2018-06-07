@@ -1,10 +1,11 @@
 class Album{
 
-  constructor (title,year){
-    this.name= title;
-    this.year= year;
+  constructor (title,year,_id){
+    this.name = title;
+    this.id = _id;
+    this.year = year;
     this.artist;
-    this.tracks=[];
+    this.tracks =[];
   }
   toJson(){
   let tr= [];
@@ -34,11 +35,13 @@ class Album{
   addATrack(track){
     this.tracks.push(track);
   }
+
   haveTrack(name){
-    return this.tracks.some(function(track){
+    return this.getTracks().some(function(track){
       return track.name===name;
     });
   }
+
   getTrackWithName(titulo){
     return this.tracks.find((t)=>{
       return t.name===titulo;
