@@ -9,7 +9,9 @@ const trackmod = require( './track.js');
 
 const listaRepmod = require('./listaReproduccion.js');
 
-const spotifyClient = require ('./spotifyClient.js')
+const spotifyClient = require ('./spotifyClient.js');
+
+const rp = require('request-promise');
 
 
 class UNQfy {
@@ -225,17 +227,21 @@ class UNQfy {
    }
 
    popularAlbumForArtist(name){
-    spotifyClient.getAlbumForArtist(name);
-    //  this.addAllAlbums (name,albums);
-     console.log ('Discografia agrergada exitosamente');
-   }
+    let client = new spotifyClient.SpotifyClient();
+    let promise_albums= client.getAlbumForArtist(name).then((lista_albums_json)=> {
 
-  //  addAllAlbums (name_art, lista_albums_json){
-  //   for(let i= 0; i>lista_albums_json.length ; i++ ){
-  //      let alb= lista_albums_json[i]
-  //      this.addAlbum (name_art, {name: alb['nombre'], year: ['year']});
-  //    }
-  //  }
+      this.addAllAlbums( name, lista_albums_json)
+    })
+  }
+  addAllAlbums( name, lista_albums_json){
+    for(let i= 0; i<lista_albums_json.length ; i++ )
+    {
+      let alb= lista_albums_json[i]
+      
+      this.addAlbum (name, {name: alb['name'], year: ['year']});
+    } this.save('unqfy.json')
+      console.log ('Discografia agrergada exitosamente');
+   }
 
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
@@ -256,7 +262,8 @@ module.exports = {
   artistmod,
   albummod,
   trackmod,
-  listaRepmod
+  listaRepmod,
+  spotifyClient
 };
 
 

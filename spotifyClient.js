@@ -5,29 +5,17 @@ const url_base= 'https://api.spotify.com/v1';
 
 const rp = require('request-promise');
 
-const loadJson= require ('./main.js');
+class SpotifyClient {
 
-// function getUNQfy(filename) {
-//     let unqfy = new unqmod.UNQfy();
-//     if (fs.existsSync(filename)) {
-//       console.log();
-//       unqfy = unqmod.UNQfy.load(filename);
-//     }
-//     return unqfy;
-//   }
-  
-//   // Guarda el estado de UNQfy en filename
-//   function saveUNQfy(unqfy, filename) {
-//     console.log();
-//     unqfy.save(filename);
-//   }
-const unqfy= loadJson.getUNQfy ('unqfy.json');
+    constructor (){
+        this.promisAlbums= []
+    }
 
-function getAlbumForArtist(artistName){
-    let promise_artistid = getIdOfArtist(artistName);
-    promise_artistid.then((id) =>
+    getAlbumForArtist(artistName){
+        let promise_artistid = this.getIdOfArtist(artistName);
+        return promise_artistid.then((id) =>
         {
-            options = 
+            const options = 
             {
                 url: url_base+ '/artists/' +  id+ '/albums',
                 headers: { Authorization: 'Bearer ' + access_token},
@@ -36,46 +24,44 @@ function getAlbumForArtist(artistName){
             return rp.get(options).then( (response) =>
             {   
                 let albums = response['items'];
-                let albList= [];
                 for(let i=0; i< albums.length; i++)
                 {
                     let currentAlbum = albums[i];
                     let title = currentAlbum['name'];
                     let yearOf = currentAlbum['release_date'];
                     
-                    unqfy.addAlbum(artistName, { name: title, year:yearOf })
+                    this.promisAlbums.push ({ name: title, year:yearOf })
                 }
-                loadJson.saveUNQfy(unqfy,'unqfy.json')
-
             })
+        }).then (()=>{ 
+             return this.promisAlbums
+        })
+         
+    }
 
-        })   
-}
-
-
-function getIdOfArtist(name){
-    const options = 
-    {
-        url: url_base+ '/search' ,
-        headers: { Authorization: 'Bearer ' + access_token},
-        qs: 
+    getIdOfArtist(name){
+        const options = 
         {
-            type: 'artist',
-            q: name,
-            limit:1
-        },
-        json: true,
-    };
+            url: url_base+ '/search' ,
+            headers: { Authorization: 'Bearer ' + access_token},
+            qs: 
+            {
+                type: 'artist',
+                q: name,
+                limit:1
+            },
+            json: true,
+        };
 
-    return rp.get(options).then( (response) =>
-    {        
-        let result = response;
-        return result['artists'].items[0].id;
-      }) 
+        return rp.get(options).then( (response) =>
+        {        
+            let result = response;
+            return result['artists'].items[0].id;
+        }) 
      
+        }
 }
 
 module.exports= {
-    getAlbumForArtist,
-    popularAlbumForArtist,
+    SpotifyClient,
 }
