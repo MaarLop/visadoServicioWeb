@@ -79,21 +79,26 @@ switch (command ){
   console.log(unqfy.getPlaylistByName(playListName));
   break;
 
-  case 'getAlbumForArtist':
-  let nameOfSpotifyArtist= process.argv[3];
-  console.log(spotifyClient.getAlbumForArtist(nameOfSpotifyArtist));
+  // case 'getAlbumForArtist':
+  // let nameOfSpotifyArtist= process.argv[3];
+  // console.log(spotifyClient.getAlbumForArtist(nameOfSpotifyArtist));
 
   case 'popularAlbumForArtist':
-  let nameOfPopulateAlbum= process.argv[3];
-  console.log(spotifyClient.popularAlbumForArtist(nameOfPopulateAlbum));
+  let name_artist= process.argv[3];
+   console.log (unqfy.popularAlbumForArtist(name_artist));
 
-  case 'getLyric':
-  let trackToLyric= process.argv[3];
-  console.log(unqfy.getTrackLyric(trackToLyric))
-  saveUNQfy(unqfy, 'unqfy.json');
+  // case 'getLyric':
+  // let trackToLyric= process.argv[3];
+  // console.log(unqfy.getTrackLyric(trackToLyric))
+  // saveUNQfy(unqfy, 'unqfy.json');
   }
 }
+
 main();
 
+module.exports= {
+  getUNQfy,
+  saveUNQfy
+}
 
 

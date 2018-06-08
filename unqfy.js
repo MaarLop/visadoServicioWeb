@@ -9,6 +9,8 @@ const trackmod = require( './track.js');
 
 const listaRepmod = require('./listaReproduccion.js');
 
+const spotifyClient = require ('./spotifyClient.js')
+
 
 class UNQfy {
 
@@ -222,6 +224,18 @@ class UNQfy {
       return track.getLyric()
    }
 
+   popularAlbumForArtist(name){
+    spotifyClient.getAlbumForArtist(name);
+    //  this.addAllAlbums (name,albums);
+     console.log ('Discografia agrergada exitosamente');
+   }
+
+  //  addAllAlbums (name_art, lista_albums_json){
+  //   for(let i= 0; i>lista_albums_json.length ; i++ ){
+  //      let alb= lista_albums_json[i]
+  //      this.addAlbum (name_art, {name: alb['nombre'], year: ['year']});
+  //    }
+  //  }
 
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
