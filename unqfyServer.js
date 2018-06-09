@@ -41,6 +41,16 @@ app.use(bodyParser.json());
 app.use('/api', router);
 app.use(errorHandler);
 //--------
+function checkValidInput(data, expectedKeys){
+    if(!valid(data, expectedKeys)){
+        throw new error.BadRequest();
+    }
+}
+function invalidJsonHandler(err, req, res , next){
+    if (err){
+        throw new error.BadRequest();
+    }
+}
 router.route('/artists').get(function (req, res) {
     let lastUnq= getUNQfy('unqfy.json').getAllArtist();
     res.json(lastUnq);
@@ -65,7 +75,7 @@ router.route('/artists/:id').delete(  function(req,res,next){
     let artista = lastUnqfy.getArtistById(id)
     if (!artista)
     {
-        next( new error.RelatedResourceNotFoundError())
+        next( new error.RelatedResourceNotFoundError());
         
     }
     else
@@ -78,12 +88,12 @@ router.route('/artists/:id').delete(  function(req,res,next){
         saveUNQfy(lastUnqfy, 'unqfy.json');
     }
     
-})
+});
 
 router.route('/artists').get(  function(req,res)
 {
     res.json( lastUnqfy.getArtistByPartOfAName(req.query.name) );
-})
+});
 
 //agregar artista  con un json
 router.route('/artists').post( function (req,res,next){
@@ -116,7 +126,7 @@ router.route ('/albums').get(function (req,res)
 {
     let albs= lastUnqfy.getAlbumPartOfAName(query.params.name)
     res.json(albs);
-})
+});
 
 router.route ('/albums').post(function (req,res,next)
 {
@@ -146,7 +156,7 @@ router.route ('/albums').post(function (req,res,next)
             next(new error.ResourceAlreadyExists());
         }
     }
-})
+});
 
 router.route('/albums/id').get(function (req,res,next)
 {
@@ -159,7 +169,7 @@ router.route('/albums/id').get(function (req,res,next)
     {
         res.json( alb_Res.toJson())
     }
-})
+});
 
 router.route('/albums/id').delete(function(req,res,next)
 {
@@ -176,7 +186,7 @@ router.route('/albums/id').delete(function(req,res,next)
                 success:true
             })   
     }
-})
+});
 
 function errorHandler(err,req, res, next){
     console.error(err);
