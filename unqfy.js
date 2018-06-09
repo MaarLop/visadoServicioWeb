@@ -13,6 +13,8 @@ const spotifyClient = require ('./spotifyClient.js');
 
 const rp = require('request-promise');
 
+const musixmatchClient= require ('./musixmatchClient.js');
+
 
 class UNQfy {
 
@@ -75,6 +77,12 @@ class UNQfy {
     let artist = new artistmod.Artista(param.name, param.country, this.artistas.length);
     this.artistas.push( artist);
     console.log('Artista agregado')
+    // for (let i = 0; i> this.artistas.length; i++){
+    // let it= this.artistas [i]
+    // if (it ==null){
+    //   delete this.artistas [i];
+    // }
+    // }
   }
 
 
@@ -119,6 +127,7 @@ class UNQfy {
       newTrack.associateAlbum(albumFound);
       albumFound.addATrack(newTrack);
       console.log(' Track agregado')
+      this.setLyric(params.name)
     }
     else{
       console.log('No existe album '+ albumName);
@@ -155,7 +164,7 @@ class UNQfy {
     });
 
     let artista= this.getArtistByName(artistaQueTieneAlbumConTrack.name);
-
+    console.log (artista)
     let track = artista.getTrackWith(name);
 
     return track; 
@@ -221,7 +230,18 @@ class UNQfy {
     return albumFound.toJson();
    }
 
-   getTrackLyric(title){
+   setLyric (track_name){
+    let track = this.getTrackByName (track_name)
+    if (track.getLyric() == null){
+      let lyric_promise= musixmatchClient.getLyricTrack(track.getTitle(), track.album.getArtistName());
+      lyric_promise.then ( (letra)=>{
+        track.setlyric(letra);
+        this.save('unqfy.json')
+      });
+    }
+   }
+
+   getLyricOfTrack(title){
      let track= this.getTrackByName(title)
       return track.getLyric()
    }
@@ -229,7 +249,7 @@ class UNQfy {
    popularAlbumForArtist(name){
     let client = new spotifyClient.SpotifyClient();
     let promise_albums= client.getAlbumForArtist(name).then((lista_albums_json)=> {
-
+      console.log(lista_albums_json)
       this.addAllAlbums( name, lista_albums_json)
     })
   }
@@ -238,7 +258,7 @@ class UNQfy {
     {
       let alb= lista_albums_json[i]
       
-      this.addAlbum (name, {name: alb['name'], year: ['year']});
+      this.addAlbum (name, {name: alb['name'], year: alb['year']});
     } this.save('unqfy.json')
       console.log ('Discografia agrergada exitosamente');
    }

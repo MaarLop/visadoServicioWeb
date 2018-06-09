@@ -40,7 +40,7 @@ toJson(){
       return al.name === nombre;
     })
   }
-  haveTrackWith(name){
+   haveTrackWith(name){
     return this.albumes.some(function(alb){
       return alb.haveTrack(name);
     });

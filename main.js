@@ -84,6 +84,12 @@ switch (command ){
   unqfy.popularAlbumForArtist(name_artist);
   saveUNQfy(unqfy,'unqfy.json');
   break
+
+  case 'getLyric':
+  let trackForGettingLyric= process.argv[3]
+  console.log(unqfy.getLyricOfTrack (trackForGettingLyric));
+  saveUNQfy(unqfy, 'unqfy.json');
+  break;
   }
 }
 
