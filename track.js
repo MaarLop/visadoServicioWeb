@@ -18,12 +18,10 @@ class Track{
     }
 
     getLyric(){
-      if (this.lyric == null){
-        this.lyric= musixmatchClient.getLyricTrack(this.getTitle(), this.album.getArtistName());
-      }
-      else{
         return this.lyric;
-      }
+    }
+    setlyric(str){
+      this.lyric= str;
     }
   }
   
