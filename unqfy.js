@@ -15,6 +15,22 @@ const rp = require('request-promise');
 
 const musixmatchClient= require ('./musixmatchClient.js');
 
+const fs = require('fs');
+
+function getUNQfy(filename) {
+  let unqfy = new UNQfy();
+  if (fs.existsSync(filename)) {
+    console.log();
+    unqfy =UNQfy.load(filename);
+  }
+  return unqfy;
+}
+
+// Guarda el estado de UNQfy en filename
+function saveUNQfy(unqfy, filename) {
+  console.log();
+  unqfy.save(filename);
+}
 
 class UNQfy {
 
@@ -249,18 +265,17 @@ class UNQfy {
    popularAlbumForArtist(name){
     let client = new spotifyClient.SpotifyClient();
     let promise_albums= client.getAlbumForArtist(name).then((lista_albums_json)=> {
-      console.log(lista_albums_json)
       this.addAllAlbums( name, lista_albums_json)
     })
   }
-  addAllAlbums( name, lista_albums_json){
-    for(let i= 0; i<lista_albums_json.length ; i++ )
-    {
-      let alb= lista_albums_json[i]
-      
-      this.addAlbum (name, {name: alb['name'], year: alb['year']});
-    } this.save('unqfy.json')
-      console.log ('Discografia agrergada exitosamente');
+  addAllAlbums( name_art, lista_albums_json){
+    let sistema_previo = getUNQfy ('unqfy.json')
+    lista_albums_json.forEach ((a)=>{
+      let alb= new albummod.Album (a['name'], a['year'])
+      sistema_previo.addAlbum (name_art, {name: alb.name, year: alb.year});
+    })
+    saveUNQfy (sistema_previo, 'unqfy.json')
+    console.log ('Discografia agrergada exitosamente');
    }
 
   save(filename = 'unqfy.json') {
@@ -276,6 +291,8 @@ class UNQfy {
   }
 }
 
+
+
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
@@ -283,7 +300,9 @@ module.exports = {
   albummod,
   trackmod,
   listaRepmod,
-  spotifyClient
+  spotifyClient,
+  getUNQfy,
+  saveUNQfy
 };
 
 
