@@ -15,7 +15,10 @@ class Album{
   })
     return {nombre: this.name, year: this.year, tracks: tr}
   }
-
+  getId(){
+    return this.id;
+  }
+  
   getTitle(){
     return this.name;
   }

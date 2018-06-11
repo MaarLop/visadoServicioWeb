@@ -229,9 +229,17 @@ class UNQfy {
         return alb1.concat(alb2);
       });
   }
-
+  
   getArtistById(nro_id){
     return this.artistas[nro_id];
+  }
+
+  getAlbumById(nro_id){
+    let todosLosAlbumes = this.getAllAlbums()
+    todosLosAlbumes.find( (l) => {
+      return (l.id === nro_id);
+    });
+    return ( todosLosAlbumes.getAlbumById());
   }
 
   deleteArtist(nro_id){

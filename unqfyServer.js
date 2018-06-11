@@ -187,6 +187,22 @@ router.route('/albums/id').delete(function(req,res,next)
             })   
     }
 });
+/////
+//filter para buscar un artista por su nombre 
+router.route ('/artist').get(function (req,res)
+{
+   let albs= lastUnqfy.getArtistByName(req.query.name)
+    res.json(albs);
+});
+//filter de albumes por nombre de artista 
+router.route ('/albums').get(function (req,res)
+{
+    let albs= lastUnqfy.getAlbumsOfArtist(req.query.name)
+    res.json(albs);
+});
+//filter de album por nombre de album
+    let albs= lastUnqfy.getAlbumByName
+/////
 
 function errorHandler(err,req, res, next){
     console.error(err);
