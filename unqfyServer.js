@@ -51,9 +51,10 @@ function invalidJson(err, req, res , next){
 
  router.route('/artists').get(function (req, res) {
     let lastUnq= lastUnqfy.getAllArtist();
-    console.log(lastUnq)
     res.json(lastUnq);
 });
+
+
 
 router.route('/artists/:id').get (function (req,res){
     let artista = lastUnqfy.getArtistById(req.params.id)
@@ -146,8 +147,8 @@ router.route('/artists').post( function (req,res){
     router.route('/albums/:id').get(function (req,res)
     {   
         let unq= unqmod.getUNQfy('unqfy.json');
-        let id = parseInt (req.params.id);
-        let alb_Res= unq.getAlbumById(id)
+        let id = parseInt(req.params.id);
+        let alb_Res= unq.getAlbumById(id);
         if (alb_Res!= null)
         {
             throw new error.RelatedResourceNotFoundError()
@@ -158,33 +159,24 @@ router.route('/artists').post( function (req,res){
         }
     });
 
-    // router.route('/albums/id').delete(function(req,res,next)
-    // {
-    //     let alb_Res= lastUnqfy.getAlbumById(req.params.id)
-    //     if (!alb_Res)
-    //     {
-    //         next( new error.RelatedResourceNotFoundError())
-    //     }
-    //     else
-    //     {
-    //         lastUnqfy.deleteAlbum(req.params.id)
-    //         res.json(
-    //             {
-    //                 success:true
-    //             }) unqmod.saveUNQfy(unq,'unqfy.json')
-    //     }
-    // });
-    // /////
- 
-    // //filter de albumes por nombre de artista 
-    // router.route ('/albums').get(function (req,res)
-    // {
-    //     let albs= lastUnqfy.getAlbumsOfArtist(req.query.name)
-    //     res.json(albs);
-    // });
-    // //filter de album por nombre de album
-    //     let albs= lastUnqfy.getAlbumByName
-    /////
+    router.route('/albums/id').delete(function(req,res,next)
+    {
+        let unq= lastUnqfy.getUNQfy ('unqfy.json')
+        let alb_Res= lastUnqfy.getAlbumById(req.params.id)
+        if (alb_Res!=null)
+        {
+            throw new error.RelatedResourceNotFoundError()
+        }
+        else
+        {
+            unq.deleteAlbum(req.params.id)
+            res.json(
+                {
+                    success:true
+                }) 
+                unqmod.saveUNQfy(unq,'unqfy.json');
+        }
+    });
 
     function errorHandler(err,req, res, next){
         console.error(err);

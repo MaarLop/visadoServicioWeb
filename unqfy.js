@@ -238,11 +238,11 @@ class UNQfy {
     let albs= []
       this.artistas.forEach((art)=>{
         let albOfArt= art.getAlbumesJson()
-        if(albOfArt != null ){
-          albs.concat(albOfArt)
-        }
+        albs.push(albOfArt)
       })
-      return albs
+      return albs.reduce(function (l1,l2){
+        return l1.concat(l2);
+      })
   }
   
   getArtistById(nro_id){
