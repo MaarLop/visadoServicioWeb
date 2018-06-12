@@ -257,6 +257,14 @@ class UNQfy {
     return ( alb_res);
   }
 
+  getAlbumById(nro_id){
+    let todosLosAlbumes = this.getAllAlbums()
+    todosLosAlbumes.find( (l) => {
+      return (l.id === nro_id);
+    });
+    return ( todosLosAlbumes.getAlbumById());
+  }
+
   deleteArtist(nro_id){
     delete this.artistas[nro_id];
   }

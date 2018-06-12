@@ -200,7 +200,56 @@ router.route('/artists').post( function (req,res){
             res.json({status:500,errorCode:'Internal Server Error'})
         }
     }
-    //-----------
+// <<<<<<< HEAD
+//     //-----------
+// =======
+// });
+
+// router.route('/albums/id').get(function (req,res,next)
+// {
+//     let alb_Res= lastUnqfy.getAlbumById(req.param.id)
+//     if (!alb_Res)
+//     {
+//         next( new error.RelatedResourceNotFoundError())
+//     }
+//     else
+//     {
+//         res.json( alb_Res.toJson())
+//     }
+// });
+
+// router.route('/albums/id').delete(function(req,res,next)
+// {
+//     let alb_Res= lastUnqfy.getAlbumById(req.params.id)
+//     if (!alb_Res)
+//     {
+//         next( new error.RelatedResourceNotFoundError())
+//     }
+//     else
+//     {
+//         lastUnqfy.deleteAlbum(req.params.id)
+//         res.json(
+//             {
+//                 success:true
+//             })   
+//     }
+// });
+// /////
+// //filter para buscar un artista por su nombre 
+// router.route ('/artist').get(function (req,res)
+// {
+//    let albs= lastUnqfy.getArtistByName(req.query.name)
+//     res.json(albs);
+// });
+// //filter de albumes por nombre de artista 
+// router.route ('/albums').get(function (req,res)
+// {
+//     let albs= lastUnqfy.getAlbumsOfArtist(req.query.name)
+//     res.json(albs);
+// });
+// //filter de album por nombre de album
+//     let albs= lastUnqfy.getAlbumByName
+// /////
 
 
     app.listen(port);
