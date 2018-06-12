@@ -6,6 +6,7 @@ const error=require('./APIerror');
 let port = process.env.PORT || 5000;        // set our port
 const fs = require('fs');
 const unqmod = require('./unqfy');
+const validator =require('express-validator')
 
 const lastUnqfy= unqmod.getUNQfy('unqfy.json');
 
@@ -23,25 +24,26 @@ app.get( '/', (req,res)=>{
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(validator());
 app.use('/api', router);
 app.use(errorHandler);
 //--------
 function checkValid(data, expectedKeys){
+    console.log(expectedKeys);
     if(!valid(data, expectedKeys)){
         throw new error.BadRequest();
     }
 }
 
-function valid(){
-    
+function valid(data, expect){
+    return Object.keys(expect).every(key=> typeof(data[key])===expect[key])
 }
 
-function invalidJson(err, req, res , next){
-    if (err){
-        throw new error.BadRequest();
-    }
- }
+// function invalidJson(err, req, res , next){
+//     if (err){
+//         throw new error.BadRequest();
+//     }
+//  }
 
  router.route ('/artist').get((req,res)=>
  {  
@@ -90,6 +92,8 @@ router.route('/artists/:id').delete(  function(req,res){
 });
 
 router.route('/artists').post( function (req,res){
+    let data= req.body
+    checkValid(data, {name: 'string', country: 'string'})
     let nameOfArt=req.body.name;
     let countryOfArt=req.body.country;
     let artist= lastUnqfy.getArtistByName(nameOfArt);
@@ -161,7 +165,7 @@ router.route('/artists').post( function (req,res){
 
     router.route('/albums/id').delete(function(req,res,next)
     {
-        let unq= lastUnqfy.getUNQfy ('unqfy.json')
+        let unq= unqmod.getUNQfy ('unqfy.json')
         let alb_Res= lastUnqfy.getAlbumById(req.params.id)
         if (alb_Res!=null)
         {
@@ -172,9 +176,9 @@ router.route('/artists').post( function (req,res){
             unq.deleteAlbum(req.params.id)
             res.json(
                 {
-                    success:true
-                }) 
-                unqmod.saveUNQfy(unq,'unqfy.json');
+                    "success":true
+                }); 
+            unqmod.saveUNQfy(unq,'unqfy.json');
         }
     });
 

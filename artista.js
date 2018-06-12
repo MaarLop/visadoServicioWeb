@@ -55,9 +55,9 @@ toJson(){
     })
   }
 
-  haveAlbumWithId(id){
-    return this.albums.some (function(al){
-        return (al.id === id)
+  haveAnAlbumWithId(id){
+    return this.albums.some (function (album){
+      return album.getId() === id
     })
   }
 
@@ -66,6 +66,13 @@ toJson(){
       return al.name === nombre;
     })
   }
+
+  getAlbumWithId(nro_id){
+    return this.albums.find ((album)=>{
+      return album.getId() === id
+    })
+  }
+
   getAlbumWithMatchTitle(name){
     let al= this.albums.find ((album)=>{
       return album.name.includes(name)
@@ -77,11 +84,6 @@ toJson(){
     return this.albums.some(function(alb){
       return alb.haveTrack(name);
     });
-  }
-  getAlbumWithId(_id){
-    let alb= this.albums.find ( (alb)=> {
-      return alb.id === _id;
-    })
   }
 
   getTrackWith(titulo){

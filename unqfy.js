@@ -103,10 +103,10 @@ class UNQfy {
   */
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
-    let id= (this.getAllAlbums().length)+1
+    let id= this.getAllAlbums().length
      const artistFound= this.getArtistByName(artistName);
     if (this.artistas.includes(artistFound) ){
-      const albumres = new albummod.Album( params.name, params.year,id);
+      const albumres = new albummod.Album( params.name, params.year,(id+1));
       albumres.associateArtist(artistFound);
       artistFound.addAnAlbum(albumres);
       console.log(' Album agregado')
@@ -252,16 +252,14 @@ class UNQfy {
   }
 
   getAlbumById(nro_id){
-    if (this.getAllAlbums().length >0){
-    let p= this.getAllAlbums().find( (l) => {
-      return (l.id === nro_id);
-    });
-    console.log(p)
-    return p
-  }
-    else{
-      return ( this.getAllAlbums());
+    let alb = null;
+    let artista= this.artistas.find((a)=>{
+      return a.haveAnAlbumWithId(nro_id)
+    })
+    if (a!= null){
+        alb= artista.getAlbumWithId(nro_id);
     }
+    return alb;
   }
 
   getAlbumById(nro_id){
