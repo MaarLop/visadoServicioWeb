@@ -1,8 +1,8 @@
 class Album{
 
   constructor (title,year,_id){
-    this.name = title;
     this.id = _id;
+    this.name = title;
     this.year = year;
     this.artist;
     this.tracks =[];
@@ -13,9 +13,12 @@ class Album{
     let title= t.getTitle();
     tr.push(title);
   })
-    return {nombre: this.name, year: this.year, tracks: tr}
+    return {id: this.id ,name: this.name, year: this.year, tracks: tr}
   }
-
+  getId(){
+    return this.id;
+  }
+  
   getTitle(){
     return this.name;
   }

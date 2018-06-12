@@ -9,22 +9,22 @@ class APIerror extends Error {
 }
 class BadRequest extends APIerror{
     constructor(message=null){
-        super(400, 'BAD REQUEST', message);
+        super(400, 'BAD_REQUEST', message);
     }
 }
  class RelatedResourceNotFoundError extends APIerror{
     constructor(message= null){
-        super(404, 'RELATED RESOURCE NOT FOUND', message);
+        super(404, 'RELATED_RESOURCE_NOT_FOUND', message);
     }
  }
  class ResourceAlreadyExists extends APIerror{
      constructor(message=null){
-         super(409, 'RESOURCE ALREADY EXISTS', message);
+         super(409, 'RESOURCE_ALREADY_EXISTS', message);
      }
  }
 class InternalServerError extends APIerror{
     constructor(message=null){
-        super(500,'INTERNAL SERVER ERROR', message );
+        super(500,'INTERNAL_SERVER_ERROR', message );
     }
 }
 

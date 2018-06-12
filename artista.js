@@ -1,18 +1,18 @@
 class Artista{
     
-  constructor (nombre, pais, _id){
+  constructor (_id,nombre, pais){
+    this.id= parseInt (_id)
     this.name = nombre;
-    this.id= _id
-    this.albumes = [];
+    this.albums = [];
     this.country = pais;
   }
 toJson(){
   let albs= [];
-  this.albumes.forEach((a)=>{
-    let title= a.getTitle();
-    albs.push(title);
+  this.albums.forEach((a)=>{
+    let albumjson= a.toJson() ;
+    albs.push(albumjson);
   });
-  return{nombre: this.name, country: this.country, id: this.id, albums: albs}
+  return{id: this.id,name: this.name, albums: albs, country: this.country}
 }
   getId(){
     return this.id;
@@ -23,30 +23,55 @@ toJson(){
   }
 
   getAlbumes(){
-    return this.albumes;
+    return this.albums;
   }
 
   addAnAlbum(album){
-    this.albumes.push(album);
+    this.albums.push(album);
   }
 
   haveAlbumWithName(nombre){
-    return this.albumes.some(function(al){
+    return this.albums.some(function(al){
         return( al.name === nombre);
     })
   }
+  hasAlbumWithPartOfTitle(title){
+    return this.albums.some (function (a){
+      return a.name.includes (title)
+    })
+  }
+
+  haveAlbumWithId(id){
+    return this.albums.some (function(al){
+        return (al.id === id)
+    })
+  }
+
   albumConNombre(nombre){
-    return this.albumes.find((al)=>{
+    return this.albums.find((al)=>{
       return al.name === nombre;
     })
   }
+  getAlbumWithMatchTitle(name){
+    let al= this.albums.find ((album)=>{
+      return album.name.includes(name)
+    })
+    return al.toJson();
+  }
+
    haveTrackWith(name){
-    return this.albumes.some(function(alb){
+    return this.albums.some(function(alb){
       return alb.haveTrack(name);
     });
   }
+  getAlbumWithId(_id){
+    let alb= this.albums.find ( (alb)=> {
+      return alb.id === _id;
+    })
+  }
+
   getTrackWith(titulo){
-    let albumFound= this.albumes.find((al)=>{
+    let albumFound= this.albums.find((al)=>{
       return al.getTrackWithName(titulo);
     });
     return albumFound.getTrackWithName(titulo);

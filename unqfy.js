@@ -90,15 +90,10 @@ class UNQfy {
   */
   addArtist(param) {
     // El objeto artista creado debe soportar (al menos) las propiedades name (string) y country (string)
-    let artist = new artistmod.Artista(param.name, param.country, this.artistas.length);
+    let id= this.artistas.length +1
+    let artist = new artistmod.Artista(id,param.name, param.country);
     this.artistas.push( artist);
     console.log('Artista agregado')
-    // for (let i = 0; i> this.artistas.length; i++){
-    // let it= this.artistas [i]
-    // if (it ==null){
-    //   delete this.artistas [i];
-    // }
-    // }
   }
 
 
@@ -108,7 +103,7 @@ class UNQfy {
   */
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
-    let id= this.getAllAlbums().length
+    let id= (this.getAllAlbums().length)+1
      const artistFound= this.getArtistByName(artistName);
     if (this.artistas.includes(artistFound) ){
       const albumres = new albummod.Album( params.name, params.year,id);
@@ -160,18 +155,31 @@ class UNQfy {
   }
 
   getArtistByPartOfAName(name){
-    let artistFound = []
-    artistFound=  this.artistas.filter( (a) => {
+    let art_res= []
+    let artistFound=this.artistas.filter( (a) => {
       const nameOfArtistIterator= a.name;
-      return ( nameOfArtistIterator.search(name) );
+      return ( nameOfArtistIterator.includes (name) );
     });
-    return (artistFound[0]);
+    return (art_res.concat(artistFound))
+  }
+
+  getAlbumPartOfAName(name){
+    let artist = this.artistas.find((artista)=>{
+      return artista.hasAlbumWithPartOfTitle(name);
+    })
+    return this.artistas.getAlbumWithMatchTitle(name);
   }
 
   getAlbumByName(name) {   
-  return (this.artistas.find( (a) => {
+  let artista = (this.artistas.find( (a) => {
                 return a.haveAlbumWithName(name);
-          })).albumConNombre(name);
+          }));
+    if(!artista){
+      return artista
+    }
+    else{
+      return( artista.albumConNombre(name))
+    }
  }
 
   getTrackByName(name) {
@@ -188,7 +196,7 @@ class UNQfy {
 
   getAlbumsOfArtist(art){
     let artis = this.getAlbumByName(art.name);
-    return artis.albumes;
+    return artis.albums;
   }
 
   getPlaylistByName(name) {
@@ -211,27 +219,42 @@ class UNQfy {
     console.log (' Playlist agregada')  
   }
 
-  ////
+  
   getAllArtist(){
     let all_artistas=[]
-    for (let i=0; i< this.artistas.length; i++){
-        all_artistas.push(this.artistas[i].toJson())
+    if (this.artistas.length ===0){
+       return all_artistas;
     }
-    return all_artistas;
+    else{
+      this.artistas.forEach((a)=>{
+        let art = a.toJson()
+        all_artistas.push(art);
+      })
+      return all_artistas;
+    }
   }
 
   getAllAlbums(){
     let albs= []
       this.artistas.forEach((art)=>{
-        albs.push(art.getAlbumes())
+        let albOfArt= art.getAlbumes()
+        albs.concat(albOfArt);
       })
-      return albs.reduce(function (alb1,alb2){
-        return alb1.concat(alb2);
-      });
+      return albs
+  }
+  
+  getArtistById(nro_id){
+    let index= nro_id-1;
+    let artist = this.getAllArtist()[index];
+    return artist;
   }
 
-  getArtistById(nro_id){
-    return this.artistas[nro_id];
+  getAlbumById(nro_id){
+    let todosLosAlbumes = this.getAllAlbums()
+    let alb_res= todosLosAlbumes.find( (l) => {
+      return (l.id === nro_id);
+    });
+    return ( alb_res);
   }
 
   deleteArtist(nro_id){
@@ -276,6 +299,18 @@ class UNQfy {
     })
     saveUNQfy (sistema_previo, 'unqfy.json')
     console.log ('Discografia agrergada exitosamente');
+   }
+
+   getAlbumByNameJson(name){
+     let album = this.getAlbumByName (name);
+     return album.toJson();
+   }
+
+   deleteAlbum(id){
+     let artist = this.artistas.find ((a) => {
+      return (a.haveAlbumWithId(id));
+    });
+    return (artist.getAlbumWithId(id));
    }
 
   save(filename = 'unqfy.json') {
