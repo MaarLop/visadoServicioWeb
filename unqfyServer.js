@@ -6,7 +6,10 @@ const error=require('./APIerror');
 let port = process.env.PORT || 5000;        // set our port
 const fs = require('fs');
 const unqmod = require('./unqfy');
-const validator =require('express-validator')
+const compareUrls = require('compare-urls');
+
+const validUrlArtists= 'http://localhost:5000/api/artists'
+const validUrlAlbums= 'http://localhost:5000/api/albums'
 
 const lastUnqfy= unqmod.getUNQfy('unqfy.json');
 
@@ -18,18 +21,17 @@ router.use(function(req, res, next) {
 });
 
 app.get( '/', (req,res)=>{
-    res.send('received');
-})
+        res.send('received');
 
+})
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(validator());
+
 app.use('/api', router);
 app.use(errorHandler);
 //--------
 function checkValid(data, expectedKeys){
-    console.log(expectedKeys);
     if(!valid(data, expectedKeys)){
         throw new error.BadRequest();
     }
@@ -145,6 +147,7 @@ router.route('/artists').post( function (req,res){
             unq.addAlbum(art_name, {name: albTitle, year:albYear})
             res.json(unq.getAlbumByNameJson (albTitle));
             unqmod.saveUNQfy(unq,'unqfy.json')
+            
         }
     });
 
@@ -189,9 +192,15 @@ router.route('/artists').post( function (req,res){
             res.json({status:err.status, errorCode: err.errorCode});
         }
         else
-        {
-            res.status(500);
-            res.json({status:500,errorCode:'Internal Server Error'})
+        { 
+            if (!(compareUrls(validUrlArtists, req.url))|| !(compareUrls(validUrlAlbums, req.url))){
+                throw new error.ResourceNotFound();
+            }
+
+            else {
+                res.status(500);
+                res.json({status:500,errorCode:'Internal Server Error'})
+            }
         }
     }
 
@@ -199,4 +208,4 @@ router.route('/artists').post( function (req,res){
 
     app.listen(port);
 
-    console.log('Server started on port ' + port);
+console.log('Server started on port ' + port);

@@ -222,16 +222,13 @@ class UNQfy {
   
   getAllArtist(){
     let all_artistas=[]
-    if (this.artistas.length ===0){
-       return all_artistas;
-    }
-    else{
+    if (this.artistas.length >0){
       this.artistas.forEach((a)=>{
-        let art = a.toJson()
+         let art = a.toJson();
         all_artistas.push(art);
-      })
-      return all_artistas;
+      })      
     }
+    return all_artistas;
   }
 
   getAllAlbums(){

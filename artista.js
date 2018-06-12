@@ -20,16 +20,12 @@ toJson(){
 
   getAlbumesJson(){
     let jsonlist= []
-    if (this.albums != null){
+    if (this.albums.length >0){
       this.albums.forEach ((a)=>{
         jsonlist.push (a.toJson())
       })
-      return jsonlist;
     }
-    else{
       return jsonlist;
-    }
-    console.log(jsonlist)
   }
 
   getName(){
