@@ -237,8 +237,10 @@ class UNQfy {
   getAllAlbums(){
     let albs= []
       this.artistas.forEach((art)=>{
-        let albOfArt= art.getAlbumes()
-        albs.concat(albOfArt);
+        let albOfArt= art.getAlbumesJson()
+        if(albOfArt != null ){
+          albs.concat(albOfArt)
+        }
       })
       return albs
   }
@@ -250,19 +252,23 @@ class UNQfy {
   }
 
   getAlbumById(nro_id){
-    let todosLosAlbumes = this.getAllAlbums()
-    let alb_res= todosLosAlbumes.find( (l) => {
+    if (this.getAllAlbums().length >0){
+    let p= this.getAllAlbums().find( (l) => {
       return (l.id === nro_id);
     });
-    return ( alb_res);
+    console.log(p)
+    return p
+  }
+    else{
+      return ( this.getAllAlbums());
+    }
   }
 
   getAlbumById(nro_id){
     let todosLosAlbumes = this.getAllAlbums()
-    todosLosAlbumes.find( (l) => {
+    return todosLosAlbumes.find( (l) => {
       return (l.id === nro_id);
     });
-    return ( todosLosAlbumes.getAlbumById());
   }
 
   deleteArtist(nro_id){
