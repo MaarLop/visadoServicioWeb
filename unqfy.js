@@ -305,12 +305,12 @@ class UNQfy {
 
   getAllArtist() {
     let all_artistas = []
-    if (this.artistas.length > 0) {
-      this.artistas.forEach((a) => {
-        let art = a.toJson();
-        all_artistas.push(art);
-      })
-    }
+    this.artistas.forEach((a) => 
+    {
+      // console.log(a)
+      let art = a.toJson();
+      all_artistas.push(a);
+    })
     return all_artistas;
   }
 
@@ -328,7 +328,21 @@ class UNQfy {
   getArtistById(nro_id) {
     let index = nro_id - 1;
     let artist = this.getAllArtist()[index];
-    return artist;
+    try 
+    {
+      if (!artist)
+      {
+        throw new error.NoExisteArtista()
+      }
+      else
+      {
+        return artist
+      }
+    }
+    catch(e)
+    {
+      return(e)
+    }
   }
 
   getAlbumById(nro_id) {

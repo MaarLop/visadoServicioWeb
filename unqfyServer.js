@@ -57,18 +57,22 @@ function valid(data, expect){
 
 
 
-router.route('/artists/:id').get (function (req,res){
+router.route('/artists/:id').get (function (req,res){///////////////////////////////
+    let id = parseInt(req.params.id)///////////////////////////////////////////////
+    console.log (id)
+    let artist =lastUnqfy.getArtistById(parseInt());
+    console.log( artist)
     try
     {
-        let artist =lastUnqfy.getArtistById();
         if (!artist)
         {
             throw new error.ResourceNotFound();
         }
+        res.json(artist)
     }
     catch(e)
     {
-        res.json(e)
+        res.json(new error.ResourceNotFound().errorCode)
     }
    
 });
@@ -108,7 +112,8 @@ router.route('/artists').post( function (req,res){
     try
     {
         if (!artist){
-            lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt} );
+            let unqfy=unqmod.getUNQfy('unqfy.json')
+            unqfy.addArtist( {name: nameOfArt, country:countryOfArt} );
             unqmod.saveUNQfy(lastUnqfy,'unqfy.json');
             res.json(lastUnqfy.getArtistByName(nameOfArt))
         }        
@@ -222,16 +227,11 @@ router.route('/artists').post( function (req,res){
             res.json({status:err.status, errorCode: err.errorCode});
         }
         else
-        { 
-            if (!(compareUrls(validUrlArtists, req.url))|| !(compareUrls(validUrlAlbums, req.url))){
-                throw new error.ResourceNotFound();
-            }
-
-            else {
-                res.status(500);
-                res.json({status:500,errorCode:'Internal Server Error'})
-            }
+        {
+            res.status(500);
+            res.json({status:500,errorCode:'Internal Server Error'})
         }
+        
     }
 
 
