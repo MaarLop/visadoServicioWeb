@@ -333,9 +333,22 @@ class UNQfy {
 
   getAlbumById(nro_id) {
     let todosLosAlbumes = this.getAllAlbums()
-    return todosLosAlbumes.find((l) => {
+    let res=todosLosAlbumes.find((l) => {
       return (l.id === nro_id);
     });
+    try
+    {
+      if (res==null)
+      {
+        throw new error.NoExisteArtista();
+      }
+      return res
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
+
   }
 
   deleteArtist(nro_id) {
