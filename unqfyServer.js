@@ -113,7 +113,7 @@ router.route('/artists').post( function (req,res){
     {
         if (!artist){
             let unqfy=unqmod.getUNQfy('unqfy.json')
-            unqfy.addArtist( {name: nameOfArt, country:countryOfArt} );
+            lastUnqfy.addArtist( {name: nameOfArt, country:countryOfArt} );
             unqmod.saveUNQfy(lastUnqfy,'unqfy.json');
             res.json(lastUnqfy.getArtistByName(nameOfArt))
         }        
