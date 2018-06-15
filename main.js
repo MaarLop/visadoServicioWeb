@@ -4,22 +4,6 @@ const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy');
 const spotifyClient= require('./spotifyClient')
 
-// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
-// function getUNQfy(filename) {
-//   let unqfy = new unqmod.UNQfy();
-//   if (fs.existsSync(filename)) {
-//     console.log();
-//     unqfy = unqmod.UNQfy.load(filename);
-//   }
-//   return unqfy;
-// }
-
-// // Guarda el estado de UNQfy en filename
-// function saveUNQfy(unqfy, filename) {
-//   console.log();
-//   unqfy.save(filename);
-// }
-
 function main() {
 let unqfy = unqmod.getUNQfy('unqfy.json');
 
@@ -88,7 +72,6 @@ switch (command ){
   case 'getLyric':
   let trackForGettingLyric= process.argv[3]
   console.log(unqfy.getLyricOfTrack (trackForGettingLyric));
-  saveUNQfy(unqfy, 'unqfy.json');
   break;
   }
 }

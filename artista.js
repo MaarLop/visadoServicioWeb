@@ -46,7 +46,7 @@ toJson(){
     })
   }
   hasAlbumWithPartOfTitle(title){
-    return this.albums.some (function (a){
+    return this.albums.some(function (a){
       return a.name.includes (title)
     })
   }
@@ -73,7 +73,7 @@ toJson(){
     let al= this.albums.find ((album)=>{
       return album.name.includes(name)
     })
-    return al.toJson();
+    return al;
   }
 
    haveTrackWith(name){

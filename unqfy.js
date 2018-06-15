@@ -201,19 +201,18 @@ class UNQfy {
   }
 
   getArtistByPartOfAName(name) {
-    let art_res = []
     let artistFound = this.artistas.filter((a) => {
       const nameOfArtistIterator = a.name;
       return (nameOfArtistIterator.includes(name));
     });
-    return (art_res.concat(artistFound))
+    return artistFound
   }
 
   getAlbumPartOfAName(name) {
     let artist = this.artistas.find((artista) => {
       return artista.hasAlbumWithPartOfTitle(name);
     })
-    return this.artistas.getAlbumWithMatchTitle(name);
+    return artista.getAlbumWithMatchTitle(name);
   }
 
   getAlbumByName(name) {
@@ -333,17 +332,6 @@ class UNQfy {
   }
 
   getAlbumById(nro_id) {
-    let alb = null;
-    let artista = this.artistas.find((a) => {
-      return a.haveAnAlbumWithId(nro_id)
-    })
-    if (a != null) {
-      alb = artista.getAlbumWithId(nro_id);
-    }
-    return alb;
-  }
-
-  getAlbumById(nro_id) {
     let todosLosAlbumes = this.getAllAlbums()
     return todosLosAlbumes.find((l) => {
       return (l.id === nro_id);
@@ -352,12 +340,12 @@ class UNQfy {
 
   deleteArtist(nro_id) {
     try {
-      let todosLosArtistas = this.getAllArtist()
-      if (!todosLosArtistas.includes(nro_id)) {
+      let artist = this.getAllArtist().getArtistById()
+      if (!artist) {
         throw error.NoExisteArtista();
       }
       else {
-        delete this.artistas[nro_id];
+        delete this.getAllArtist[nro_id-1];
       }
     }
     catch (e) {
@@ -414,7 +402,6 @@ class UNQfy {
     let artist = this.artistas.find((a) => {
       return (a.haveAlbumWithId(id));
     });
-    return (artist.getAlbumWithId(id));
     try {
       if (artist == null) {
         throw error.NoExisteAlbum();
@@ -422,7 +409,6 @@ class UNQfy {
       else {
         return (artist.getAlbumWithId(id));
       }
-
     }
     catch (e) {
       console.log(e.message);
