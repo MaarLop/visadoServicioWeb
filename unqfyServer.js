@@ -10,7 +10,6 @@ const unqmod = require('./unqfy');
 
 const lastUnqfy= unqmod.getUNQfy('unqfy.json');
 
-
 router.use(function(req, res, next) {
     // do logging
     console.log('Request received!');
@@ -59,9 +58,8 @@ function valid(data, expect){
 
 router.route('/artists/:id').get (function (req,res){///////////////////////////////
     let id = parseInt(req.params.id)///////////////////////////////////////////////
-    console.log (id)
-    let artist =lastUnqfy.getArtistById(parseInt());
-    console.log( artist)
+    let artist =lastUnqfy.getArtistById(parseInt(id));
+    console.log(id);
     try
     {
         if (!artist)
@@ -233,6 +231,11 @@ router.route('/artists').post( function (req,res){
         }
         
     }
+    router.use((req, res) => {
+        res.status(404);
+        res.json({status: 404, errorCode: 'RESOURCE_NOT_FOUND'});
+      });
+    router.use(errorHandler);
 
 
 
