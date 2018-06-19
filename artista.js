@@ -88,6 +88,16 @@ toJson(){
     });
     return albumFound.getTrackWithName(titulo);
   }
+  deleteAlbum(_id){
+    this.albums= this.albums.filter((al)=>{
+      return al.id != _id
+    })
+  }
+
+  itHasName(part_name){
+    return this.name.includes(part_name)
+  }
+
 }
 module.exports = {
   Artista,

@@ -43,7 +43,7 @@ function valid(data, expect){
 //     }
 //  }
 
- router.route ('/artist').get((req,res)=>
+ router.route ('/artists?name=name').get((req,res)=>
  {  
      let name= req.query.name
      return res.json (lastUnqfy.getArtistByPartOfAName(name));
@@ -56,10 +56,13 @@ function valid(data, expect){
 
 
 
+
 router.route('/artists/:id').get (function (req,res){///////////////////////////////
     let id = parseInt(req.params.id)///////////////////////////////////////////////
-    let artist =lastUnqfy.getArtistById(parseInt(id));
-    console.log(id);
+    let unq= unqmod.getUNQfy('unqfy.json') 
+    console.log(id)   
+    let artist =unq.getArtistById(id);
+    
     try
     {
         if (!artist)
@@ -70,14 +73,14 @@ router.route('/artists/:id').get (function (req,res){///////////////////////////
     }
     catch(e)
     {
-        res.json(new error.ResourceNotFound().errorCode)
+        res.json(e)
     }
    
 });
 
-router.route('/artists/:id').delete(  function(req,res){
-    let id = parseInt(req.params.id)
-    let artista = unqmod.getUNQfy('unqfy.json').getArtistById(id);
+router.route('/artists/id').delete(  function(req,res){
+    let unq= unqmod.getUNQfy ('unqfy.json')
+    let artista = lastUnqfy.getArtistById(req.params.id);
     try
     {
         if (artista == null)
@@ -86,12 +89,12 @@ router.route('/artists/:id').delete(  function(req,res){
         }
         else
         {
-            unqmod.getUNQfy('unqfy.json').deleteArtist(parseInt(id));
+            unq.deleteArtist(req.params.id);
             res.json
                 ({
                     "success": true,
                 })
-            unqmod.saveUNQfy(lastUnqfy, 'unqfy.json');
+            unqmod.saveUNQfy(unq, 'unqfy.json');
         }
     }
     catch(e)
@@ -141,6 +144,8 @@ router.route('/artists').post( function (req,res){
 
     router.route ('/albums').post(function (req,res)
     {
+        let data= req.body
+        checkValid(data, {name: 'string', year: 'number', artistId: 'number'})
         let unq= unqmod.getUNQfy('unqfy.json');
         let albTitle = req.body.name
         let artistId = parseInt(req.body.artistId)
@@ -172,11 +177,10 @@ router.route('/artists').post( function (req,res){
         }
     });
 
-    router.route('/albums/:id').get(function (req,res)
+    router.route('/albums/id').get(function (req,res)
     {   
         let unq= unqmod.getUNQfy('unqfy.json');
-        let id = parseInt(req.params.id);
-        let alb_Res= unq.getAlbumById(id);
+        let alb_Res= unq.getAlbumById(parseInt(req.params.id));
         try
         {    if (alb_Res!= null)
             {
@@ -184,7 +188,7 @@ router.route('/artists').post( function (req,res){
             }
             else
             {
-                return res.json( req.alb_Res);
+                res.json( req.alb_Res);
             } 
         }
         catch(e)
@@ -193,12 +197,12 @@ router.route('/artists').post( function (req,res){
         }
     });
 
-    router.route('/albums/id').delete(function(req,res,next)
+    router.route('/albums/id').delete(function(req,res)
     {
         let unq= unqmod.getUNQfy ('unqfy.json')
         let alb_Res= lastUnqfy.getAlbumById(req.params.id)
         try
-        {    if (alb_Res!=null)
+        {    if (alb_Res==null)
             {
                 throw new error.RelatedResourceNotFoundError()
             }

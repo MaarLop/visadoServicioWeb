@@ -200,10 +200,11 @@ class UNQfy {
     }
   }
 
-  getArtistByPartOfAName(name) {
-    let artistFound = this.artistas.filter((a) => {
-      const nameOfArtistIterator = a.name;
-      return (nameOfArtistIterator.includes(name));
+  getArtistByPartOfAName(_name) {
+    let artistsFound=[]
+    artistsFound= this.artistas.filter((a) => {
+      return a.itHasName(_name);
+      
     });
     return artistFound
   }
@@ -305,12 +306,15 @@ class UNQfy {
 
   getAllArtist() {
     let all_artistas = []
-    this.artistas.forEach((a) => 
+    if (this.artistas.length>0)
     {
-      // console.log(a)
-      let art = a.toJson();
-      all_artistas.push(a);
-    })
+      this.artistas.forEach((a) => 
+      {
+        console.log(a)
+        let art = a.toJson();
+        all_artistas.push(a);
+        })  
+    }
     return all_artistas;
   }
 
@@ -327,10 +331,10 @@ class UNQfy {
 
   getArtistById(nro_id) {
     let index = nro_id - 1;
-    let artist = this.getAllArtist()[index];
+    let artist = this.artistas[index];
     try 
     {
-      if (!artist)
+      if (artist== null)
       {
         throw new error.NoExisteArtista()
       }
@@ -341,7 +345,7 @@ class UNQfy {
     }
     catch(e)
     {
-      return(e)
+      console.log(e.message)
     }
   }
 
@@ -367,12 +371,13 @@ class UNQfy {
 
   deleteArtist(nro_id) {
     try {
-      let artist = this.getAllArtist().getArtistById()
-      if (!artist) {
+      let artist = this.artistas[nro_id-1]
+      if (artist== null) {
         throw error.NoExisteArtista();
       }
-      else {
-        delete this.getAllArtist[nro_id-1];
+      else 
+      {
+        delete this.artistas[nro_id-1];
       }
     }
     catch (e) {
@@ -434,7 +439,7 @@ class UNQfy {
         throw error.NoExisteAlbum();
       }
       else {
-        return (artist.getAlbumWithId(id));
+        artist.deleteAlbum(id);
       }
     }
     catch (e) {
