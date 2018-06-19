@@ -324,9 +324,17 @@ class UNQfy {
       let albOfArt = art.getAlbumesJson()
       albs.push(albOfArt)
     })
-    return albs.reduce(function (l1, l2) {
+    if (albs.length>0)
+    {
+      let p = albs.reduce(function (l1, l2) {
       return l1.concat(l2);
     })
+    return p
+    }
+    else
+    {
+    return albs
+    }
   }
 
   getArtistById(nro_id) {
@@ -358,7 +366,7 @@ class UNQfy {
     {
       if (res==null)
       {
-        throw new error.NoExisteArtista();
+        throw new error.NoExisteAlbum();
       }
       return res
     }
