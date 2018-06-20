@@ -191,7 +191,7 @@ router.route('/artists').post( function (req,res){
     {   
         let unq= unqmod.getUNQfy('unqfy.json');
         let _id= parseInt(req.params.id)
-        let alb_Res= unq.getAlbumById(parseInt(_id));
+        let alb_Res= unq.getAlbumById(_id);
         try
         {    if (alb_Res== null)
             {
@@ -212,7 +212,9 @@ router.route('/artists').post( function (req,res){
     router.route('/albums/:id').delete(function(req,res)
     {
         let unq= unqmod.getUNQfy ('unqfy.json')
-        let alb_Res= unq.getAlbumById(req.params.id)
+        let _id= parseInt(req.params.id)
+        let alb_Res= unq.getAlbumById(_id)
+        
         try
         {    if (alb_Res==null)
             {
@@ -220,10 +222,10 @@ router.route('/artists').post( function (req,res){
             }
             else
             {
-                unq.deleteAlbum(req.params.id)
-                res.json(
-                    {
-                        "success":true
+                unq.deleteAlbum(_id);
+                res.json
+                    ({
+                        "success": true
                     }); 
                 unqmod.saveUNQfy(unq,'unqfy.json');
             }

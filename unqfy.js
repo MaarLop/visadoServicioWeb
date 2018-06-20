@@ -348,7 +348,7 @@ class UNQfy {
       }
       else
       {
-        return artist
+        return artist.toJson()
       }
     }
     catch(e)
@@ -440,7 +440,7 @@ class UNQfy {
 
   deleteAlbum(id) {
     let artist = this.artistas.find((a) => {
-      return (a.haveAlbumWithId(id));
+      return a.haveAnAlbumWithId(id);
     });
     try {
       if (artist == null) {

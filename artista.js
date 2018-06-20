@@ -12,7 +12,7 @@ toJson(){
     let albumjson= a.toJson() ;
     albs.push(albumjson);
   });
-  return{id: this.id, name: this.name, albums: albs, country: this.country}
+  return {id: this.id, name: this.name, albums: albs, country: this.country}
 }
   getId(){
     return this.id;
