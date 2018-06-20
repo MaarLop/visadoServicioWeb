@@ -95,12 +95,12 @@ class UNQfy {
     let id = this.artistas.length + 1;
     let artist = new artistmod.Artista(id, param.name, param.country);
     try {
-      if ((this.getArtistByName(artist.name)) != null) {
-        throw new error.YaExisteArtista();
-      }
-      else {
+      if ((this.getArtistByName(artist.name)) == null) {
         this.artistas.push(artist);
         console.log('Artista agregado')
+      }
+      else {
+        throw new error.YaExisteArtista();
       }
     }
     catch (e) {
@@ -116,19 +116,19 @@ class UNQfy {
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
     let id = this.getAllAlbums().length
-    const artistFound = this.getArtistByName(artistName);
     try {
-      if (!artistFound) {
+      if (this.getArtistByName(artistName)== null) {
         throw new error.NoExisteArtista();
-
       }
-
-      else {
-        try {
+      else 
+      {
+        try 
+        {
           if (this.getAlbumByName(params.name) != null) {
             throw new error.YaExisteAlbum();
           }
-          else {
+          else 
+          {
             const albumres = new albummod.Album(params.name, params.year, (id + 1));
             albumres.associateArtist(artistFound);
             artistFound.addAnAlbum(albumres);
@@ -137,13 +137,14 @@ class UNQfy {
           }
 
         }
-        catch (e) {
+        catch (e) 
+        {
           console.log(e.message);
         }
       }
     }
     catch (e) {
-      console.log(e.message);
+      console.log(new error.NoExisteArtista().message);
     }
   }
 
@@ -185,26 +186,26 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-    try {
+    // try {
       let artistFound = this.artistas.find((a) => {
         const nameOfArtistIterator = a.name;
         return (name === nameOfArtistIterator);
       });
-      if (artistFound == null) {
-        throw error.NoExisteArtista();
-      }
+      // if (artistFound == null) {
+      //   throw new error.NoExisteArtista();
+      // }
       return (artistFound);
-    }
-    catch (e) {
-      console.log(e.message);
-    }
+    // }
+    // catch (e) {
+    //   console.log(e.message);
+    // }
   }
 
   getArtistByPartOfAName(_name) {
     let artistsFound=[]
     artistsFound= this.artistas.filter((a) => {
-      return a.itHasName(_name);
-      
+      return a.name.search(_name);
+      console.log(a.name)
     });
     return artistFound
   }
@@ -244,7 +245,6 @@ class UNQfy {
       }
       else {
         let artista = this.getArtistByName(artistaQueTieneAlbumConTrack.name);
-        console.log(artista)
         let track = artista.getTrackWith(name);
 
         return track;
@@ -310,7 +310,6 @@ class UNQfy {
     {
       this.artistas.forEach((a) => 
       {
-        console.log(a)
         let art = a.toJson();
         all_artistas.push(a);
         })  

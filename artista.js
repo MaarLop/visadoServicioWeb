@@ -95,7 +95,7 @@ toJson(){
   }
 
   itHasName(part_name){
-    return this.name.includes(part_name)
+    return this.name.search(part_name)
   }
 
 }

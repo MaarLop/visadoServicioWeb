@@ -113,16 +113,13 @@ router.route('/artists').post( function (req,res){
     let artist= unq.getArtistByName(nameOfArt);
     try
     {
-        if (!artist){
-            let unqfy=unqmod.getUNQfy('unqfy.json')
-            unqfy.addArtist( {name: nameOfArt, country:countryOfArt} );
-            unqfy.saveUNQfy('unqfy.json');
-            res.json(unqfy.getArtistByName(nameOfArt))
-        }        
-        else
+        if (artist !=null)
         {
             throw new error.ResourceAlreadyExists();
         }
+        unq.addArtist( {name: nameOfArt, country:countryOfArt} );
+        unqmod.saveUNQfy(unq,'unqfy.json');
+        res.json(unq.getArtistByName(nameOfArt))
     }
     catch(e)
     {
@@ -148,15 +145,15 @@ router.route('/artists').post( function (req,res){
     router.route ('/albums').post(function (req,res)
     {
         let data= req.body
-        // checkValid(data ,{name: 'string', year: 'number', artistId: 'string'})
+        checkValid(data ,{name: 'string', year: 'number', artistId: 'number'})
         let unq= unqmod.getUNQfy('unqfy.json');
         let albTitle = req.body.name
         let artistId = parseInt(req.body.artistId)
-        let albYear = req.body.year
+        let albYear = parseInt(req.body.year)
         let artist = unq.getArtistById(artistId);
         try
         {
-            if (artist==null)
+            if (artist!=null)
             {
                 throw new error.RelatedResourceNotFoundError()
             }
@@ -165,19 +162,27 @@ router.route('/artists').post( function (req,res){
             {            
                 let art_name= artist.name;
                 let album = unq.getAlbumByName(albTitle);
-                if (album!= null)
+                try
                 {
-                    throw new error.ResourceAlreadyExists();
+                    if (album!= null)
+                    {
+                        throw new error.ResourceAlreadyExists();
+                    }
+                    unq.addAlbum(art_name, {name: albTitle, year:albYear})
+                    res.json(unq.getAlbumByNameJson (albTitle));
+                    unqmod.saveUNQfy(unq,'unqfy.json')
                 }
-                unq.addAlbum(art_name, {name: albTitle, year:albYear})
-                res.json(unq.getAlbumByNameJson (albTitle));
-                unqmod.saveUNQfy(unq,'unqfy.json')
+                catch(e)
+                {
+                    res.status(409)
+                    res.json(e)
+                }
             }
         }
         catch(e)
         {
-            res.status(409)
-            res.json(e)
+            res.status(404);
+            res.json(new error.RelatedResourceNotFoundError());
         }
     });
 

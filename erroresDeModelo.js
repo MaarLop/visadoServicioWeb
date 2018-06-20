@@ -57,5 +57,5 @@ class NoExisteLyric extends ErroresDeModelo {
   }
 }
 
-module.exports = { NoExisteArtista, YaExisteArtista, ErroresDeModelo, YaExisteAlbum, YaExisteTrack, 
+module.exports = {ErroresDeModelo, NoExisteArtista, YaExisteArtista, YaExisteAlbum, YaExisteTrack, 
   YaExistePlaylist,NoExisteTrack,NoExistePlaylist,NoExisteLyric, NoExisteAlbum};
