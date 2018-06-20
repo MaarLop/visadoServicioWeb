@@ -116,8 +116,9 @@ class UNQfy {
   addAlbum(artistName, params) {
     // El objeto album creado debe tener (al menos) las propiedades name (string) y year
     let id = this.getAllAlbums().length
+    let artistFound= this.getArtistByName(artistName)
     try {
-      if (this.getArtistByName(artistName)== null) {
+      if (artistFound== null) {
         throw new error.NoExisteArtista();
       }
       else 
@@ -207,7 +208,7 @@ class UNQfy {
       return a.name.search(_name);
       console.log(a.name)
     });
-    return artistFound
+    return artistsFound
   }
 
   getAlbumPartOfAName(name) {
@@ -224,7 +225,7 @@ class UNQfy {
     try {
       if (!artista) {
 
-        throw error.NoExisteAlbum();
+        throw new error.NoExisteAlbum();
       }
       else {
         return (artista.albumConNombre(name))
@@ -443,7 +444,7 @@ class UNQfy {
     });
     try {
       if (artist == null) {
-        throw error.NoExisteAlbum();
+        throw new error.NoExisteAlbum();
       }
       else {
         artist.deleteAlbum(id);

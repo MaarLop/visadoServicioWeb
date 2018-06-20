@@ -153,7 +153,7 @@ router.route('/artists').post( function (req,res){
         let artist = unq.getArtistById(artistId);
         try
         {
-            if (artist!=null)
+            if (artist==null)
             {
                 throw new error.RelatedResourceNotFoundError()
             }
@@ -162,6 +162,7 @@ router.route('/artists').post( function (req,res){
             {            
                 let art_name= artist.name;
                 let album = unq.getAlbumByName(albTitle);
+                console.log(album)
                 try
                 {
                     if (album!= null)
@@ -189,8 +190,8 @@ router.route('/artists').post( function (req,res){
     router.route('/albums/:id').get(function (req,res)
     {   
         let unq= unqmod.getUNQfy('unqfy.json');
-        let alb_Res= unq.getAlbumById(parseInt(req.params.id));
-        console.log(req.params.id)
+        let _id= parseInt(req.params.id)
+        let alb_Res= unq.getAlbumById(parseInt(_id));
         try
         {    if (alb_Res== null)
             {
@@ -198,7 +199,7 @@ router.route('/artists').post( function (req,res){
             }
             else
             {
-                res.json( req.alb_Res);
+                res.json( alb_Res);
             } 
         }
         catch(e)
