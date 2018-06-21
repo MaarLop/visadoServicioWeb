@@ -34,6 +34,12 @@ function valid(data, expect){
     return Object.keys(expect).every(key=> typeof(data[key])===expect[key])
 }
 
+function jsonfallido(err, req, res , next){
+    if (err){
+        throw new error.BadRequest();
+    }
+ }
+
 
  router.route('/artists').get(function (req, res) {
     let unq= unqmod.getUNQfy('unqfy.json')
@@ -106,6 +112,15 @@ router.route('/artists').post( function (req,res){
     let artist= unq.getArtistByName(nameOfArt);
     try
     {
+        JSON.parse(req.body)
+    }
+    catch(e)
+    {
+        jsonfallido(e, req, res)
+    }
+
+    try
+    {
         if (artist !=null)
         {
             throw new error.ResourceAlreadyExists();
@@ -145,6 +160,17 @@ router.route('/artists').post( function (req,res){
         let artistId = parseInt(req.body.artistId)
         let albYear = parseInt(req.body.year)
         let artist = unq.getArtistById(artistId);
+
+        try
+        {
+            JSON.parse(req.body)
+        }
+        catch(e)
+        {
+            jsonfallido(e, req, res)
+        }
+
+
         try
         {
             if (artist==null)
