@@ -205,17 +205,23 @@ class UNQfy {
   getArtistByPartOfAName(_name) {
     let artistsFound=[]
     artistsFound= this.artistas.filter((a) => {
-      return a.name.search(_name);
-      console.log(a.name)
+      return a.name.toLowerCase().includes(_name.toLowerCase());
     });
+    artistsFound.forEach((a)=>{
+      a.toJson()
+    })
     return artistsFound
   }
 
   getAlbumPartOfAName(name) {
-    let artist = this.artistas.find((artista) => {
+    let artists = this.artistas.filter((artista) => {
       return artista.hasAlbumWithPartOfTitle(name);
     })
-    return artista.getAlbumWithMatchTitle(name);
+    let albs=[]
+    artists.forEach((artista)=>{
+      albs.concat(artista.getAlbumWithMatchTitle(name));
+    })
+    return albs
   }
 
   getAlbumByName(name) {

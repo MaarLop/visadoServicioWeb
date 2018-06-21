@@ -70,7 +70,7 @@ toJson(){
   }
 
   getAlbumWithMatchTitle(name){
-    let al= this.albums.find ((album)=>{
+    let al= this.albums.filter ((album)=>{
       return album.name.includes(name)
     })
     return al;

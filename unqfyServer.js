@@ -34,31 +34,24 @@ function valid(data, expect){
     return Object.keys(expect).every(key=> typeof(data[key])===expect[key])
 }
 
-// function invalidJson(err, req, res , next){
-//     if (err){
-//         throw new error.BadRequest();
-//     }
-//  }
-
- router.route ('/artists?name=name').get((req,res)=>
- {  
-     let name= req.query.name
-     return res.json (lastUnqfy.getArtistByPartOfAName(name));
-})
 
  router.route('/artists').get(function (req, res) {
     let unq= unqmod.getUNQfy('unqfy.json')
-    let p= unq.getAllArtist();
-    res.json(p);
+    let artists= unq.getAllArtist();
+    res.json(artists);
 });
 
-
+router.route ('/artists').get((req,res)=>
+{  
+    let name= req.query.name
+    let unqfy= unqmod.getUNQfy('unqfy.json')
+    return res.json (unqfy.getArtistByPartOfAName(name));
+})
 
 
 router.route('/artists/:id').get (function (req,res){///////////////////////////////
     let id = parseInt(req.params.id)///////////////////////////////////////////////
-    let unq= unqmod.getUNQfy('unqfy.json') 
-    console.log(id)   
+    let unq= unqmod.getUNQfy('unqfy.json')    
     let artist =unq.getArtistById(id);
     
     try
@@ -138,7 +131,8 @@ router.route('/artists').post( function (req,res){
 
     router.route ('/albums').get(function (req,res)
     {
-        let albs= lastUnqfy.getAlbumPartOfAName(query.params.name)
+        let unqfy= unqmod.getUNQfy('unqfy.json');
+        let albs= unqfy.getAlbumPartOfAName(query.params.name)
         res.json(albs);
     });
 
@@ -162,7 +156,6 @@ router.route('/artists').post( function (req,res){
             {            
                 let art_name= artist.name;
                 let album = unq.getAlbumByName(albTitle);
-                console.log(album)
                 try
                 {
                     if (album!= null)
