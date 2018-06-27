@@ -45,9 +45,10 @@ toJson(){
         return( al.name === nombre);
     })
   }
-  hasAlbumWithPartOfTitle(title){
+  hasAlbumWithPartOfTitle(_name){
     return this.albums.some(function (a){
-      return a.name.includes (title)
+      let title= a.name.toLowerCase();
+      return title.includes (_name.toLowerCase())
     })
   }
 
@@ -69,11 +70,13 @@ toJson(){
     })
   }
 
-  getAlbumWithMatchTitle(name){
+  getAlbumWithMatchTitle(_name){
+
     let al= this.albums.filter ((album)=>{
-      return album.name.includes(name)
+      let title= album.name.toLowerCase();
+      return title.includes(_name.toLowerCase())
     })
-    return al;
+     return al
   }
 
    haveTrackWith(name){

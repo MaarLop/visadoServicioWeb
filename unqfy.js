@@ -210,16 +210,20 @@ class UNQfy {
     artistsFound.forEach((a)=>{
       a.toJson()
     })
-    return artistsFound
+    return artistsFound;
   }
 
-  getAlbumPartOfAName(name) {
+  getAlbumPartOfAName(name) {    
     let artists = this.artistas.filter((artista) => {
       return artista.hasAlbumWithPartOfTitle(name);
     })
+   artists.forEach((a)=>{
+     a.toJson()
+   })
     let albs=[]
     artists.forEach((artista)=>{
-      albs.concat(artista.getAlbumWithMatchTitle(name));
+      let albums= JSON.stringify(artista).getAlbumWithMatchTitle(name)
+      albs.concat(albums);
     })
     return albs
   }

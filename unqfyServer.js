@@ -20,6 +20,11 @@ app.get( '/', (req,res)=>{
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(function(err, req, res, next) {
+    if (err){
+        throw new error.BadRequest()
+    }
+  });
 
 app.use('/api', router);
 app.use(errorHandler);
@@ -34,29 +39,24 @@ function valid(data, expect){
     return Object.keys(expect).every(key=> typeof(data[key])===expect[key])
 }
 
-function jsonfallido(err, req, res , next){
-    if (err){
-        throw new error.BadRequest();
-    }
- }
-
 
  router.route('/artists').get(function (req, res) {
     let unq= unqmod.getUNQfy('unqfy.json')
-    let artists= unq.getAllArtist();
-    res.json(artists);
+    let name= req.query.name
+
+    if (name == null ){
+        let artists= unq.getAllArtist();
+        res.json(artists);
+    }
+    else{
+        return res.json(unq.getArtistByPartOfAName(name));
+    }
 });
 
-router.route ('/artists').get((req,res)=>
-{  
-    let name= req.query.name
-    let unqfy= unqmod.getUNQfy('unqfy.json')
-    return res.json (unqfy.getArtistByPartOfAName(name));
-})
 
 
-router.route('/artists/:id').get (function (req,res){///////////////////////////////
-    let id = parseInt(req.params.id)///////////////////////////////////////////////
+router.route('/artists/:id').get (function (req,res){
+    let id = parseInt(req.params.id)
     let unq= unqmod.getUNQfy('unqfy.json')    
     let artist =unq.getArtistById(id);
     
@@ -110,14 +110,6 @@ router.route('/artists').post( function (req,res){
     let nameOfArt=req.body.name;
     let countryOfArt=req.body.country;
     let artist= unq.getArtistByName(nameOfArt);
-    try
-    {
-        JSON.parse(req.body)
-    }
-    catch(e)
-    {
-        jsonfallido(e, req, res)
-    }
 
     try
     {
@@ -140,16 +132,18 @@ router.route('/artists').post( function (req,res){
     router.route('/albums').get(function (req, res) 
     {
         let unq= unqmod.getUNQfy('unqfy.json');
-        let albums = unq.getAllAlbums();
-        res.json(albums);
+        let name = req.query.name;
+        if ( name == null){
+            let albums = unq.getAllAlbums();
+            res.json(albums)
+        }
+        else{
+            let albs= unq.getAlbumPartOfAName(name)
+            res.json(albs);
+        }
+
     });
 
-    router.route ('/albums').get(function (req,res)
-    {
-        let unqfy= unqmod.getUNQfy('unqfy.json');
-        let albs= unqfy.getAlbumPartOfAName(query.params.name)
-        res.json(albs);
-    });
 
     router.route ('/albums').post(function (req,res)
     {
@@ -160,15 +154,6 @@ router.route('/artists').post( function (req,res){
         let artistId = parseInt(req.body.artistId)
         let albYear = parseInt(req.body.year)
         let artist = unq.getArtistById(artistId);
-
-        try
-        {
-            JSON.parse(req.body)
-        }
-        catch(e)
-        {
-            jsonfallido(e, req, res)
-        }
 
 
         try
@@ -257,7 +242,6 @@ router.route('/artists').post( function (req,res){
     });
 
     function errorHandler(err,req, res, next){
-        console.error(err);
         if (err instanceof error.APIerror){
             res.status(err.status);
             res.json({status:err.status, errorCode: err.errorCode});
