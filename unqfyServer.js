@@ -6,7 +6,7 @@ const error=require('./APIerror');
 let port = process.env.PORT || 5000;        // set our port
 const fs = require('fs');
 const unqmod = require('./unqfy');
-
+const notificador= require('./notificador');
 router.use(function(req, res, next) {
     // do logging
     console.log('Request received!');
@@ -258,6 +258,12 @@ router.route('/artists').post( function (req,res){
         res.json({status: 404, errorCode: 'RESOURCE_NOT_FOUND'});
       });
     router.use(errorHandler);
+
+    const notificador= new Notificador();
+    unqfy.addListener('addAlmbum', notificador);
+    unqfy.addListener('addArtist', notificador);
+    unqfy.addListener('removeArtist', notificador);
+    return unqfy;
 
 
 

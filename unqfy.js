@@ -38,9 +38,10 @@ function saveUNQfy(unqfy, filename) {
   unqfy.save(filename);
 }
 
-class UNQfy {
+class UNQfy  extends Observable{
 
   constructor() {
+    super();
     this.artistas = [];
     this.playlists = [];
 
@@ -138,6 +139,7 @@ class UNQfy {
             const albumres = new albummod.Album(params.name, params.year, (id + 1));
             albumres.associateArtist(artistFound);
             artistFound.addAnAlbum(albumres);
+            this.change['addAlbum', {unqfy: this, artistFound:artistFound,albumres:albumres}];
             console.log(' Album agregado')
 
           }
