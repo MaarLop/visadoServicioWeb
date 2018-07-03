@@ -5,9 +5,8 @@ let bodyParser = require('body-parser');
 const error=require('./APIerror');
 let port = process.env.PORT || 5000;        // set our port
 const fs = require('fs');
-const server = require('./unqfyServer.js');
-const emailservice= require('./notificationServer')
-const url= 'http://localhost:5000/api/artists'
+const unqfyClient = require('./unqfyClient.js');
+const notificador= require('./notificador.js')
 
 router.use(function(req, res, next) {
     console.log('Request received!');
@@ -38,9 +37,16 @@ function valid(data, expect){
 
   router.route('/subscribe').post(function (req, res) {
     let data= req.body
+    let id= data.id
+    let mail= data.mail
+
     checkValid(data, {artistId: 'number', email: 'string'})
-      try{
-        server.get('/artist/'+req.body.artistId);          
+      try
+      {
+        if (unqfyClient.getArtistById(id))
+        {
+          notificador.suscribe(id,mail)
+        }                
       }
       catch(e){
         res.status(404)
@@ -50,19 +56,30 @@ function valid(data, expect){
   router.route('/unsuscribe').post( function (req,res){
     let data= req.body
     checkValid(data, {artistId: 'number', email: 'string'})
-      try{
-        server.get('/artist/'+req.body.artistId);  
-        }        
-      catch(e){
+      try
+      {
+        if (unqfyClient.getArtistById(id))
+        {
+          notificador.unsuscribe(id,mail)
+        }   
+      }        
+      catch(e)
+      {
         res.status(404)
         res.json(e)
       }
   });  
   router.route('/notify').post( function (req,res){
-    let data= req.body
+    let data = req.body
+    let id   = data.artistId;
+    let subj = data.subject
+    let msj  = data.message
+    let from = data.from
+
     checkValid(data, {artistId: 'number', subject:'string', message:'string', from: 'string'})
-      try{
-        server.get('/artist/'+req.body.artistId);          
+      try
+      {
+        notificador.notify(id, subj,msj, from)            
       }
       catch(e){
         res.status(404)
@@ -71,16 +88,20 @@ function valid(data, expect){
     })
 
     router.route('/suscriptions').get( function (req,res){
-        let data= req.body
+        let data = req.body
         checkValid(data, {artistId: 'number'})
-          try{
-            server.get('/artist/'+req.body.artistId);          
+          try
+          {
+            if (unqfyClient.getArtistById(id))
+            {
+              let lisa= notificador.getSuscriptions(id)
+              res.json
+              ({
+                "artistId": data.artistId,
+                "suscriptores": lista
+               })
+            }         
           }
-        //   res.json({
-        //       "artistId": req.body.artistId,
-        //       "suscriptores": lista
-              
-        //   })
           catch(e){
             res.status(404)
             res.json(e)
@@ -89,10 +110,14 @@ function valid(data, expect){
 
     router.route('/suscriptions').delete( function (req,res){
         let data= req.body
+        let id= data.artistId;
         checkValid(data, {artistId: 'number'})
           try{
-            server.get('/artist/'+req.body.artistId);          
-          }
+            if (unqfyClient.getArtistById(id))
+            {
+              notificador.deleteSuscribes(id)
+            }   
+          }  
           catch(e){
             res.status(404)
             res.json(e)
