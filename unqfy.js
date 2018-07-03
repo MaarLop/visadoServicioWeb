@@ -103,6 +103,7 @@ class UNQfy  extends Observable{
     try {
       if ((this.getArtistByName(artist.name)) == null) {
         this.artistas.push(artist);
+        this.change('addArtist', {unqfy: this, artist:artist,})
         console.log('Artista agregado')
       }
       else {
@@ -403,6 +404,7 @@ class UNQfy  extends Observable{
       else 
       {
         delete this.artistas[nro_id-1];
+        this.change['removeArtist', {unqfy: this, artist:artist}];
       }
     }
     catch (e) {
