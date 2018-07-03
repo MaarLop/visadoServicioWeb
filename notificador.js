@@ -42,4 +42,12 @@ class Notificador{
           console.log(e.message);
         }
     }
+
+    getSuscriptions(artistId){
+        return this.subcripciones.get(id)
+    }
+
+    deleteSuscribes(artId){
+        this.subcripciones.get(artId) =[];
+    }
 }
