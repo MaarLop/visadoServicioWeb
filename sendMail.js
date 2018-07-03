@@ -38,14 +38,6 @@ function send (subject,message,lista){
                 console.log(info);
             }
         });
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log(error);
-            } 
-            else {
-                console.log(info);
-            }
-        });
     }
 
 

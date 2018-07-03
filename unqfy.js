@@ -23,6 +23,8 @@ const usermod= require('./user.js')
 
 const youtubeClient= require('./youtubeClient.js')
 
+const observable = require ('./observable')
+
 function getUNQfy(filename) {
   let unqfy = new UNQfy();
   if (fs.existsSync(filename)) {
@@ -38,7 +40,7 @@ function saveUNQfy(unqfy, filename) {
   unqfy.save(filename);
 }
 
-class UNQfy  extends Observable{
+class UNQfy  extends observable.Observable{
 
   constructor() {
     super();
