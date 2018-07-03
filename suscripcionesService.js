@@ -145,6 +145,11 @@ app.use(errorHandler);
       });
     router.use(errorHandler);
 
+    const notificador= new Notificador();
+    unqfy.addListener('addAlmbum', notificador);
+    unqfy.addListener('addArtist', notificador);
+    unqfy.addListener('removeArtist', notificador);
+    return unqmod;
 
 
     app.listen(port);
