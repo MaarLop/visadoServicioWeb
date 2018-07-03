@@ -43,7 +43,7 @@ class UNQfy {
   constructor() {
     this.artistas = [];
     this.playlists = [];
-    this.users= [];
+
   }
 
   getTracksMatchingGenres(gen) {
@@ -469,54 +469,6 @@ class UNQfy {
       console.log(e.message);
     }
 
-  }
-
-  darDeAltaUsuario (email, name){
-    let user= new usermod.User(email, name)
-    try 
-    {
-      if (this.users.includes(user)){
-        throw new Error ('usuario ya registrado')
-      }
-      else{
-        this.users.push(user);
-      }
-    }
-    catch(e){
-      console.log (e.message)
-    }
-  }
-
-  suscribir(mail, id){
-    let user= this.users.find((u)=>{
-      return u.email == mail
-    })
-    user.subscribe(id)
-  }
-
-  emailIsSubscribe(mail, id){
-    let user= this.users.find ((u)=>{
-      return u.email == mail
-    })
-    return user.hasAnArtistInList(id)
-  }
-
-  desuscribir(mail,artistId){
-    let user= this.users.find ((u)=>{
-      return u.email == mail
-    })
-    user.unsubscribe(id)
-  }
-
-  suscriptosA(artistId){
-    let emailsuscriptos= []
-    let usersuscr= this.users.filter((u)=>{
-      return u.hasAnArtistInList(artistId);
-    })
-    usersuscr.forEach((u)=>{
-      emailsuscriptos.push(u.email)
-    })
-    return emailsuscriptos;
   }
 
   agregarVideo(artistaId){

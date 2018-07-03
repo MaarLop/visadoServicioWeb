@@ -21,7 +21,6 @@ const transporter = nodemailer.createTransport({
     },
 
 });
-let x= ['s.mariel.lopez1995@gmail.com', 'mar_070195@hotmail.com']
 
 function send (subject,message,lista){
     const mailOptions = {
