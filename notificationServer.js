@@ -21,20 +21,36 @@ const transporter = nodemailer.createTransport({
     },
 
 });
-// setup email data with unicode symbols
-const mailOptions = {
-from: '"Subscription Service" '+'<'+email+'>', // sender address
-to: 's.mariel.lopez1995@gmail.com', // list of receivers
-subject: 'Un nuevo album de tu artista favotito ha sido agregado, ¿que esperas para escucharlo?',
-text: 'Entra y se el primero en escuchar el nuevo album de tu artista favorito', // plain text body
-html: '<b>Entra y se el primero en escuchar el nuevo album de tu artista favorito</b>' // html body
-};
-// enviando mail con callbacks
-transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        console.log(error);
-    } 
-    else {
-        console.log(info);
+let x= ['s.mariel.lopez1995@gmail.com', 'mar_070195@hotmail.com']
+
+function send (subject,message,lista){
+    const mailOptions = {
+        from: '"Subscription Service" '+'<'+email+'>', // sender address
+        to: lista,
+        subject: subject,
+        text: message, // plain text body
+        html: '<b>'+message+'</b>' // html body
+        }
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } 
+            else {
+                console.log(info);
+            }
+        });
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } 
+            else {
+                console.log(info);
+            }
+        });
     }
-});
+
+
+
+module.exports={
+    send
+}

@@ -19,6 +19,10 @@ const fs = require('fs');
 
 const error = require('./erroresDeModelo');
 
+const usermod= require('./user.js')
+
+const youtubeClient= require('./youtubeClient.js')
+
 function getUNQfy(filename) {
   let unqfy = new UNQfy();
   if (fs.existsSync(filename)) {
@@ -39,6 +43,7 @@ class UNQfy {
   constructor() {
     this.artistas = [];
     this.playlists = [];
+    this.users= [];
   }
 
   getTracksMatchingGenres(gen) {
@@ -466,6 +471,69 @@ class UNQfy {
 
   }
 
+  darDeAltaUsuario (email, name){
+    let user= new usermod.User(email, name)
+    try 
+    {
+      if (this.users.includes(user)){
+        throw new Error ('usuario ya registrado')
+      }
+      else{
+        this.users.push(user);
+      }
+    }
+    catch(e){
+      console.log (e.message)
+    }
+  }
+
+  suscribir(mail, id){
+    let user= this.users.find((u)=>{
+      return u.email == mail
+    })
+    user.subscribe(id)
+  }
+
+  emailIsSubscribe(mail, id){
+    let user= this.users.find ((u)=>{
+      return u.email == mail
+    })
+    return user.hasAnArtistInList(id)
+  }
+
+  desuscribir(mail,artistId){
+    let user= this.users.find ((u)=>{
+      return u.email == mail
+    })
+    user.unsubscribe(id)
+  }
+
+  suscriptosA(artistId){
+    let emailsuscriptos= []
+    let usersuscr= this.users.filter((u)=>{
+      return u.hasAnArtistInList(artistId);
+    })
+    usersuscr.forEach((u)=>{
+      emailsuscriptos.push(u.email)
+    })
+    return emailsuscriptos;
+  }
+
+  agregarVideo(artistaId){
+    let index= artistaId-1
+    let artist = this.artistas[index]
+    let promesaVideos= youtubeClient.getVideosForArtist(artist.name).then((lista_de_videos)=>{
+      artist.setVideos(lista_de_videos)
+      this.save('unqfy.json')
+    })
+  }
+  
+  obtenerVideos(artistaId){
+    let index= artistaId-1
+    let artist = this.artistas[index]
+    return artist.videos;
+  }
+
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
   }
@@ -489,6 +557,7 @@ module.exports = {
   trackmod,
   listaRepmod,
   spotifyClient,
+  usermod,
   getUNQfy,
   saveUNQfy
 };

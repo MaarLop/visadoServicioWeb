@@ -1,6 +1,7 @@
 class User {
-    constructor(email){
+    constructor(email, name){
         this.email= email;
+        this.name= name;
         this.suscripciones=[]
     }
 
@@ -20,13 +21,13 @@ class User {
     }
 
     unsubscribe(artist){
-        let index= this.suscripciones.indexOf(artist);
         try{
             if (!this.hasAnArtistInList(artist)){
                 throw new Error('No se encuentra suscripto al artista')
             }
             else
             {
+                let index= this.suscripciones.indexOf(artist);
                 delete this.suscripciones[index]
             }
         }
@@ -35,9 +36,9 @@ class User {
         }
     }
 
-    hasAnArtistInList(artist){
+    hasAnArtistInList(artistid){
         return this.suscripciones.some(function(art){
-            return art.id === artist.id;
+            return art.id === artistid;
         })
     }
 }

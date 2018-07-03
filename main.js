@@ -73,6 +73,16 @@ switch (command ){
   let trackForGettingLyric= process.argv[3]
   console.log(unqfy.getLyricOfTrack (trackForGettingLyric));
   break;
+
+  case 'agregarVideos':
+  let artistaId= process.argv[3]
+  unqfy.agregarVideo(artistaId)
+  break
+  
+  case 'getVideos':
+  let artista_Id= process.argv[3]
+  console.log(unqfy.obtenerVideos(artista_Id))
+  break
   }
 }
 

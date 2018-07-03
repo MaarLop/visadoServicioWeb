@@ -5,6 +5,7 @@ class Artista{
     this.name = nombre;
     this.albums = [];
     this.country = pais;
+    this.videos= []
   }
 toJson(){
   let albs= [];
@@ -99,6 +100,10 @@ toJson(){
 
   itHasName(part_name){
     return this.name.search(part_name)
+  }
+
+  setVideos(lista){
+    this.videos= lista
   }
 
 }
