@@ -66,6 +66,7 @@ router.route('/artists/:id').get (function (req,res){
         {
             throw new error.ResourceNotFound();
         }
+        console.log(artist)
         res.json(artist)
     }
     catch(e)

@@ -1,19 +1,31 @@
 const sendMmail = require('./sendMail');
 class Notificador{
     constructor(){
-        this.subcripciones={};
+        this.subcripciones=new Map();
 
     }
     subscribe(artId,email){
-        if (artId.includes(this.subcripciones)){
-            if(!this.subcripciones[artId].includes(email)){
-                this.subcripciones[artId].push(email);
+        if (this.subcripciones.has(artId)){
+            if (! this.subcripciones.get(artId).includes(email)){
+                this.subcripciones.get(artId).push(email);
+                console.log("se agrego")   
             }
-            
         }
         else{
-            this.subcripciones[artId]= [email.toLowerCase()];
+            this.subcripciones.set(artId, [email])
+            console.log("se agrego por primera vez")
         }
+    
+        // if (artId.includes(this.subcripciones)){
+        //     if(!this.subcripciones[artId].includes(email)){
+        //         this.subcripciones[artId].push(email);
+        //         console.log("se agrego")
+        //     }
+            
+        // }
+        // else{
+        //     this.subcripciones[artId]= [email.toLowerCase()];
+        // }
     }
 
     unsubscribe(artId, email){
