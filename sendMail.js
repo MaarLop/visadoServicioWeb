@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 
 });
 
-function send (subject,message,lista){
+function send(subject, message,from_,lista){
     const mailOptions = {
         from: '"Subscription Service" '+'<'+email+'>', // sender address
         to: lista,

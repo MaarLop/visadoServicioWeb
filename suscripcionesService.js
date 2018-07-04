@@ -6,10 +6,10 @@ const error=require('./APIerror');
 let port = process.env.PORT || 5001;        // set our port
 const fs = require('fs');
 const unqfyClient = require('./unqfyClient.js');
-const notif= require('./notificador.js')
+const notifmod= require('./notificador.js')
 const unqmod = require('./unqfy.js')
 
-const notificador= new notif.Notificador();
+const notificador= notifmod.getNotificador('notificador.json');
 let unqfy = unqmod.getUNQfy('unfy.json')
 unqfy.addListeners('addAlmbum', notificador);
 unqfy.addListeners('addArtist', notificador);
@@ -52,8 +52,9 @@ function valid(data, expect){
       {
         if (unqfyClient.getArtistById(id))
         {
-          console.log ("entro al if del entry point")
-          notificador.subscribe(id,mail)
+          let notific= notifmod.getNotificador('notificador.json')
+          notific.subscribe(id,mail)
+          notifmod.saveNotificador(notific, 'notificador.json');
           res.json({
             "success":true
           })
@@ -79,7 +80,9 @@ function valid(data, expect){
       {
         if (unqfyClient.getArtistById(id))
         {
-          notificador.unsubscribe(id,mail)
+          let notific= notifmod.getNotificador('notificador.json')
+          notific.unsubscribe(id,mail)
+          notifmod.saveNotificador(notific, 'notificador.json');
         }   
       }        
       catch(e)
@@ -98,7 +101,9 @@ function valid(data, expect){
     checkValid(data, {artistId: 'number', subject:'string', message:'string', from: 'string'})
       try
       {
-        notificador.notify(id, subj,msj, from)            
+        let notific= notifmod.getNotificador('notificador.json')
+        notific.notify(id, subj,msj, from)            
+        notifmod.saveNotificador(notific, 'notificador.json');
       }
       catch(e){
         res.status(404)
@@ -114,11 +119,11 @@ function valid(data, expect){
           {
             if (unqfyClient.getArtistById(id))
             {
-              let lista= notificador.getSuscriptions(id)
+              let notific= notifmod.getNotificador('notificador.json')
               res.json
               ({
                 "artistId": data.artistId,
-                "suscriptores": lista
+                "suscriptores": notifmod.getSuscriptions(id)
                })
             }         
           }
@@ -135,7 +140,9 @@ function valid(data, expect){
           try{
             if (unqfyClient.getArtistById(id))
             {
-              notificador.deleteSuscribes(id)
+              let notific= notifmod.getNotificador('notificador.json')
+              notific.deleteSuscribes(id)
+              notifmod.saveNotificador(notific, 'notificador.json');
             }   
           }  
           catch(e){
