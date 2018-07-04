@@ -51,3 +51,6 @@ class Notificador{
         this.subcripciones.get(artId) =[];
     }
 }
+module.exports={
+    Notificador
+}

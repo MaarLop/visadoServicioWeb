@@ -517,7 +517,8 @@ module.exports = {
   spotifyClient,
   usermod,
   getUNQfy,
-  saveUNQfy
+  saveUNQfy,
+  observable
 };
 
 

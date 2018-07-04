@@ -7,6 +7,7 @@ let port = process.env.PORT || 5000;        // set our port
 const fs = require('fs');
 const unqfyClient = require('./unqfyClient.js');
 const notificador= require('./notificador.js')
+const unqmod = require('./unqfy.js')
 
 router.use(function(req, res, next) {
     console.log('Request received!');
@@ -37,7 +38,7 @@ function valid(data, expect){
 
   router.route('/subscribe').post(function (req, res) {
     let data= req.body
-    let id= data.id
+    let id= parseInt(data.id)
     let mail= data.mail
 
     checkValid(data, {artistId: 'number', email: 'string'})
@@ -55,6 +56,8 @@ function valid(data, expect){
 });  
   router.route('/unsuscribe').post( function (req,res){
     let data= req.body
+    let id= parseInt(data.artistId)
+    let mail = data.email
     checkValid(data, {artistId: 'number', email: 'string'})
       try
       {
@@ -71,7 +74,7 @@ function valid(data, expect){
   });  
   router.route('/notify').post( function (req,res){
     let data = req.body
-    let id   = data.artistId;
+    let id   = parseInt(data.artistId);
     let subj = data.subject
     let msj  = data.message
     let from = data.from
@@ -87,14 +90,15 @@ function valid(data, expect){
       }
     })
 
-    router.route('/suscriptions').get( function (req,res){
+    router.route('/suscriptions').post( function (req,res){
         let data = req.body
+        let id = parseInt(data.artistId)
         checkValid(data, {artistId: 'number'})
           try
           {
             if (unqfyClient.getArtistById(id))
             {
-              let lisa= notificador.getSuscriptions(id)
+              let lista= notificador.getSuscriptions(id)
               res.json
               ({
                 "artistId": data.artistId,
@@ -110,7 +114,7 @@ function valid(data, expect){
 
     router.route('/suscriptions').delete( function (req,res){
         let data= req.body
-        let id= data.artistId;
+        let id= parseInt(data.artistId)
         checkValid(data, {artistId: 'number'})
           try{
             if (unqfyClient.getArtistById(id))
@@ -145,12 +149,14 @@ app.use(errorHandler);
       });
     router.use(errorHandler);
 
-    const notificador= new Notificador();
-    unqfy.addListener('addAlmbum', notificador);
-    unqfy.addListener('addArtist', notificador);
-    unqfy.addListener('removeArtist', notificador);
-    return unqmod;
+    const notif= new notificador.Notificador();
+    let unqfy = unqmod.getUNQfy('unfy.json')
+    unqfy.addListeners('addAlmbum', notif);
+    unqfy.addListeners('addArtist', notif);
+    unqfy.addListeners('removeArtist', notif);
 
+
+    console.log('///////////77')
 
     app.listen(port);
 
