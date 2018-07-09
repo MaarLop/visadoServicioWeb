@@ -1,16 +1,16 @@
-let express = require('express');        // call express
-let app = express();                 // define our app using express
+let express = require('express');
+let app = express();
 let router = express.Router();
 let bodyParser = require('body-parser');
 const error=require('./APIerror');
-let port = process.env.PORT || 5000;        // set our port
+let port = process.env.PORT || 5000;
 const fs = require('fs');
 const unqmod = require('./unqfy');
+ const notificador= require('./notificadorCliente.js')
 
 router.use(function(req, res, next) {
-    // do logging
     console.log('Request received!');
-    next(); // make sure we go to the next routes and don't stop here
+    next();
 });
 
 app.get( '/', (req,res)=>{
@@ -28,7 +28,8 @@ app.use(function(err, req, res, next) {
 
 app.use('/api', router);
 app.use(errorHandler);
-//--------
+
+
 function checkValid(data, expectedKeys){
     if(!valid(data, expectedKeys)){
         throw new error.BadRequest();
@@ -49,7 +50,8 @@ function valid(data, expect){
         res.json(artists);
     }
     else{
-        return res.json(unq.getArtistByPartOfAName(name));
+        let artres= unq.getArtistByPartOfAName(name)       
+        res.json( artres)
     }
 });
 
@@ -66,8 +68,12 @@ router.route('/artists/:id').get (function (req,res){
         {
             throw new error.ResourceNotFound();
         }
-        console.log(artist)
-        res.json(artist)
+        return res.json({
+            "id": artist.id,
+            "name": artist.name,
+            "albums":artist.albums,
+            "country": artist.country
+        })
     }
     catch(e)
     {
@@ -88,6 +94,7 @@ router.route('/artists/:id').delete(  function(req,res){
         }
         else
         {
+            notificador.remove(req.params.id)
             unq.deleteArtist(req.params.id);
             res.json
                 ({
@@ -120,7 +127,13 @@ router.route('/artists').post( function (req,res){
         }
         unq.addArtist( {name: nameOfArt, country:countryOfArt} );
         unqmod.saveUNQfy(unq,'unqfy.json');
-        res.json(unq.getArtistByName(nameOfArt))
+        let artis= unq.getArtistByName(nameOfArt);
+        return res.json({
+            "id": artis.id,
+            "name": artis.name,
+            "albums":artis.albums,
+            "country": artis.country
+        })
     }
     catch(e)
     {
@@ -140,7 +153,7 @@ router.route('/artists').post( function (req,res){
         }
         else{
             let albs= unq.getAlbumPartOfAName(name)
-            res.json(albs);
+            return res.json(albs);
         }
 
     });
@@ -175,6 +188,7 @@ router.route('/artists').post( function (req,res){
                         throw new error.ResourceAlreadyExists();
                     }
                     unq.addAlbum(art_name, {name: albTitle, year:albYear})
+                    notificador.update(artist, albTitle)
                     res.json(unq.getAlbumByNameJson (albTitle));
                     unqmod.saveUNQfy(unq,'unqfy.json')
                 }

@@ -7,13 +7,9 @@ let port = process.env.PORT || 5001;        // set our port
 const fs = require('fs');
 const unqfyClient = require('./unqfyClient.js');
 const notifmod= require('./notificador.js')
-const unqmod = require('./unqfy.js')
+const unqmod = require('./unqfy.js');
 
-const notificador= notifmod.getNotificador('notificador.json');
-let unqfy = unqmod.getUNQfy('unfy.json')
-unqfy.addListeners('addAlmbum', notificador);
-unqfy.addListeners('addArtist', notificador);
-unqfy.addListeners('removeArtist', notificador);
+const notificador= new notifmod.Notificador();
 
 
 router.use(function(req, res, next) {
@@ -52,9 +48,7 @@ function valid(data, expect){
       {
         if (unqfyClient.getArtistById(id))
         {
-          let notific= notifmod.getNotificador('notificador.json')
-          notific.subscribe(id,mail)
-          notifmod.saveNotificador(notific, 'notificador.json');
+          notificador.subscribe(id,mail)
           res.json({
             "success":true
           })
@@ -66,23 +60,24 @@ function valid(data, expect){
         }             
       }
       catch(e){
-        console.log("no tendria que entrar ni en pedo")
         res.status(404)
         res.json(new error.RelatedResourceNotFoundError())
       }
 });  
-  router.route('/unsuscribe').post( function (req,res){
+  router.route('/unsubscribe').post( function (req,res){/////
     let data= req.body
     let id= parseInt(data.artistId)
     let mail = data.email
     checkValid(data, {artistId: 'number', email: 'string'})
+    console.log(data)
       try
       {
         if (unqfyClient.getArtistById(id))
         {
-          let notific= notifmod.getNotificador('notificador.json')
-          notific.unsubscribe(id,mail)
-          notifmod.saveNotificador(notific, 'notificador.json');
+          notificador.unsubscribe(id,mail)
+          res.json({
+            "success": true
+          })
         }   
       }        
       catch(e)
@@ -91,7 +86,7 @@ function valid(data, expect){
         res.json(e)
       }
   });  
-  router.route('/notify').post( function (req,res){
+  router.route('/notify').post( function (req,res){////
     let data = req.body
     let id   = parseInt(data.artistId);
     let subj = data.subject
@@ -100,10 +95,9 @@ function valid(data, expect){
 
     checkValid(data, {artistId: 'number', subject:'string', message:'string', from: 'string'})
       try
-      {
-        let notific= notifmod.getNotificador('notificador.json')
-        notific.notify(id, subj,msj, from)            
-        notifmod.saveNotificador(notific, 'notificador.json');
+      { 
+      res.json(notificador.notify(id, subj,msj, from) )
+                   
       }
       catch(e){
         res.status(404)
@@ -119,11 +113,10 @@ function valid(data, expect){
           {
             if (unqfyClient.getArtistById(id))
             {
-              let notific= notifmod.getNotificador('notificador.json')
               res.json
               ({
                 "artistId": data.artistId,
-                "suscriptores": notifmod.getSuscriptions(id)
+                "suscriptores": notificador.getSuscriptions(id)
                })
             }         
           }
@@ -133,16 +126,14 @@ function valid(data, expect){
           } 
     })
 
-    router.route('/suscriptions').delete( function (req,res){
+    router.route('/suscriptions').delete( function (req,res){////cuelga pero anda
         let data= req.body
         let id= parseInt(data.artistId)
         checkValid(data, {artistId: 'number'})
           try{
             if (unqfyClient.getArtistById(id))
             {
-              let notific= notifmod.getNotificador('notificador.json')
-              notific.deleteSuscribes(id)
-              notifmod.saveNotificador(notific, 'notificador.json');
+              notificador.deleteSuscribes(id)
             }   
           }  
           catch(e){

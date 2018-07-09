@@ -23,8 +23,6 @@ const usermod= require('./user.js')
 
 const youtubeClient= require('./youtubeClient.js')
 
-const observable = require ('./observable')
-
 function getUNQfy(filename) {
   let unqfy = new UNQfy();
   if (fs.existsSync(filename)) {
@@ -40,10 +38,9 @@ function saveUNQfy(unqfy, filename) {
   unqfy.save(filename);
 }
 
-class UNQfy  extends observable.Observable{
+class UNQfy {
 
   constructor() {
-    super();
     this.artistas = [];
     this.playlists = [];
 
@@ -105,7 +102,6 @@ class UNQfy  extends observable.Observable{
     try {
       if ((this.getArtistByName(artist.name)) == null) {
         this.artistas.push(artist);
-        this.change('addArtist', {unqfy: this, artist:artist,})
         console.log('Artista agregado')
       }
       else {
@@ -142,7 +138,6 @@ class UNQfy  extends observable.Observable{
             const albumres = new albummod.Album(params.name, params.year, (id + 1));
             albumres.associateArtist(artistFound);
             artistFound.addAnAlbum(albumres);
-            this.change['addAlbum', {unqfy: this, artistFound:artistFound,albumres:albumres}];
             console.log(' Album agregado')
 
           }
@@ -217,25 +212,30 @@ class UNQfy  extends observable.Observable{
     artistsFound= this.artistas.filter((a) => {
       return a.name.toLowerCase().includes(_name.toLowerCase());
     });
+    let res= []
     artistsFound.forEach((a)=>{
-      a.toJson()
+      let json =a.toJson()
+      res.push(json)
     })
-    return artistsFound;
+    return res;
   }
 
   getAlbumPartOfAName(name) {    
     let artists = this.artistas.filter((artista) => {
       return artista.hasAlbumWithPartOfTitle(name);
     })
-   artists.forEach((a)=>{
-     a.toJson()
-   })
     let albs=[]
     artists.forEach((artista)=>{
-      let albums= JSON.stringify(artista).getAlbumWithMatchTitle(name)
-      albs.concat(albums);
+      let albums= artista.getAlbumWithMatchTitle(name)
+      albs.push(albums);
     })
-    return albs
+    let jsonAlb= []
+    albs.forEach((a)=>{
+      let json= a.toJson()
+      jsonAlb.push(json)
+    })
+    console.log (jsonAlb)
+    return jsonAlb
   }
 
   getAlbumByName(name) {
@@ -327,14 +327,12 @@ class UNQfy  extends observable.Observable{
 
   getAllArtist() {
     let all_artistas = []
-    if (this.artistas.length>0)
-    {
-      this.artistas.forEach((a) => 
+    this.artistas.forEach((a) => 
       {
         let art = a.toJson();
-        all_artistas.push(a);
-        })  
-    }
+        all_artistas.push(art);
+       })  
+       console.log(all_artistas)
     return all_artistas;
   }
 
@@ -406,7 +404,6 @@ class UNQfy  extends observable.Observable{
       else 
       {
         delete this.artistas[nro_id-1];
-        this.change['removeArtist', {unqfy: this, artist:artist}];
       }
     }
     catch (e) {
@@ -518,7 +515,6 @@ module.exports = {
   usermod,
   getUNQfy,
   saveUNQfy,
-  observable
 };
 
 
