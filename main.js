@@ -83,6 +83,16 @@ switch (command ){
   let artista_Id= process.argv[3]
   console.log(unqfy.obtenerVideos(artista_Id))
   break
+
+
+  case 'addTwits':
+  let param= process.argv[3]
+  unqfy.twittes(param)
+
+  case 'getTwits':
+  let p= process.argv[3]
+  console.log(unqfy.getTwitts(p))
+
   }
 }
 

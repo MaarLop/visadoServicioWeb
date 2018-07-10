@@ -23,6 +23,8 @@ const usermod= require('./user.js')
 
 const youtubeClient= require('./youtubeClient.js')
 
+const tw = require ('./twitterClient.js')
+
 function getUNQfy(filename) {
   let unqfy = new UNQfy();
   if (fs.existsSync(filename)) {
@@ -487,6 +489,19 @@ class UNQfy {
     let index= artistaId-1
     let artist = this.artistas[index]
     return artist.videos;
+  }
+
+  twittes(name){
+    let artist= this.getArtistByName(name)
+    let twit= tw.get(name)
+    artist.addTwitts(twit)
+     console.log(twit)
+    this.save('unqfy.json')
+    }
+
+  getTwitts(name){
+    let a= this.getArtistByName(name);
+    return a.twitts
   }
 
   save(filename = 'unqfy.json') {
