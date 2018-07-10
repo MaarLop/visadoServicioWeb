@@ -7,6 +7,7 @@ let port = process.env.PORT || 5000;
 const fs = require('fs');
 const unqmod = require('./unqfy');
  const notificador= require('./notificadorCliente.js')
+ const rp = require('request-promise')
 
 router.use(function(req, res, next) {
     console.log('Request received!');
@@ -94,8 +95,10 @@ router.route('/artists/:id').delete(  function(req,res){
         }
         else
         {
-            notificador.remove(req.params.id)
-            unq.deleteArtist(req.params.id);
+            notificador.remove(req.params.id).then( function (response){
+                unq.deleteArtist(req.params.id)
+            });
+            unq.deleteArtist(req.params.id)
             res.json
                 ({
                     "success": true,
@@ -187,10 +190,12 @@ router.route('/artists').post( function (req,res){
                     {
                         throw new error.ResourceAlreadyExists();
                     }
-                    unq.addAlbum(art_name, {name: albTitle, year:albYear})
                     notificador.update(artist, albTitle)
-                    res.json(unq.getAlbumByNameJson (albTitle));
+                    
+                    unq.addAlbum(art_name, {name: albTitle, year:albYear})
                     unqmod.saveUNQfy(unq,'unqfy.json')
+                    res.json(unq.getAlbumByNameJson (albTitle));
+                                   
                 }
                 catch(e)
                 {

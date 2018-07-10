@@ -252,7 +252,7 @@ class UNQfy {
       }
     }
     catch (e) {
-      console.log(e.message);
+      e.message;
     }
   }
 

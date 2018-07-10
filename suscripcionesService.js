@@ -31,6 +31,7 @@ app.use(function(err, req, res, next) {
   });
   function checkValid(data, expectedKeys){
     if(!valid(data, expectedKeys)){
+        console.log('entro  en el checkValid')
         throw new error.BadRequest();
     }
 }
@@ -113,11 +114,20 @@ function valid(data, expect){
           {
             if (unqfyClient.getArtistById(id))
             {
-              res.json
-              ({
-                "artistId": data.artistId,
-                "suscriptores": notificador.getSuscriptions(id)
-               })
+              try{
+                  if( notificador.getSuscriptions(id) ==null){
+                    throw new error.ResourceNotFound()
+                  }
+                res.json
+                ({
+                    "artistId": data.artistId,
+                    "suscriptores": notificador.getSuscriptions(id)
+                })
+              }
+              catch(e){
+                res.status(404)
+                res.json(e)
+              }
             }         
           }
           catch(e){
@@ -126,7 +136,7 @@ function valid(data, expect){
           } 
     })
 
-    router.route('/suscriptions').delete( function (req,res){////cuelga pero anda
+    router.route('/suscriptions').delete( function (req,res){
         let data= req.body
         let id= parseInt(data.artistId)
         checkValid(data, {artistId: 'number'})

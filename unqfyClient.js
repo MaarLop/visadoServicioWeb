@@ -1,4 +1,5 @@
-const url_    = 'http://localhost:5000/api/artists/'
+const url_  = 'http://localhost:5000/api/artists/'
+// const url_  = 'http://172.20.0.21:5000/api/artists'
 const rp    = require('request-promise');
 const error = require('./APIerror');
 
