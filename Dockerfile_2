@@ -16,7 +16,7 @@ COPY *.js /home/node/my_node_app/
 COPY mail.json .
 COPY spotifyCreds.json . 
 
-RUN chown node:users /home/node/
+RUN chown -R node:users /home/node/
 
 
 USER node

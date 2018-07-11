@@ -45,47 +45,41 @@ function valid(data, expect){
     let id= data.artistId
     let mail= data.email
     checkValid(data, {artistId: 'number', email: 'string'})
-      try
-      {
-        if (unqfyClient.getArtistById(id))
-        {
-          notificador.subscribe(id,mail)
+    let promisBoolean= unqfyClient.getArtistById(id)
+    promisBoolean.then ( (existeArtista)=>{
+      if (existeArtista){
+         notificador.subscribe(id,mail)
           res.json({
             "success":true
           })
-        }   
-        else{
+      }
+      else{
           res.json({
             "success":false
           })  
-        }             
-      }
-      catch(e){
-        res.status(404)
-        res.json(new error.RelatedResourceNotFoundError())
-      }
+      } 
+    })
 });  
   router.route('/unsubscribe').post( function (req,res){/////
     let data= req.body
     let id= parseInt(data.artistId)
     let mail = data.email
     checkValid(data, {artistId: 'number', email: 'string'})
-    console.log(data)
-      try
-      {
-        if (unqfyClient.getArtistById(id))
-        {
+
+    let promisBoolean= unqfyClient.getArtistById(id)
+    promisBoolean.then ( (existeArtista)=>{
+      if (existeArtista){
           notificador.unsubscribe(id,mail)
           res.json({
-            "success": true
+            "success":true
           })
-        }   
-      }        
-      catch(e)
-      {
-        res.status(404)
-        res.json(e)
       }
+      else{
+          res.json({
+            "success":false
+          })  
+      } 
+    })
   });  
   router.route('/notify').post( function (req,res){////
     let data = req.body
@@ -95,62 +89,42 @@ function valid(data, expect){
     let from = data.from
 
     checkValid(data, {artistId: 'number', subject:'string', message:'string', from: 'string'})
-      try
-      { 
-      res.json(notificador.notify(id, subj,msj, from) )
-                   
-      }
-      catch(e){
-        res.status(404)
-        res.json(e)
-      }
-    })
+    let promisBoolean= unqfyClient.getArtistById(id)
+    promisBoolean.then ( (existeArtista)=>{
+      if (existeArtista){
+        res.json(notificador.notify(id, subj,msj, from) ) 
+      } 
+    })  
+})
 
     router.route('/suscriptions').post( function (req,res){
         let data = req.body
         let id = parseInt(data.artistId)
         checkValid(data, {artistId: 'number'})
-          try
-          {
-            if (unqfyClient.getArtistById(id))
-            {
-              try{
-                  if( notificador.getSuscriptions(id) ==null){
-                    throw new error.ResourceNotFound()
-                  }
-                res.json
-                ({
-                    "artistId": data.artistId,
-                    "suscriptores": notificador.getSuscriptions(id)
-                })
-              }
-              catch(e){
-                res.status(404)
-                res.json(e)
-              }
-            }         
+
+        let promisBoolean= unqfyClient.getArtistById(id)
+        promisBoolean.then ( (existeArtista)=>{
+          if (existeArtista){ 
+            res.json({
+               "artistId": data.artistId,
+               "suscriptores": notificador.getSuscriptions(id)
+            })      
           }
-          catch(e){
-            res.status(404)
-            res.json(e)
-          } 
-    })
+  })
+})
 
     router.route('/suscriptions').delete( function (req,res){
         let data= req.body
         let id= parseInt(data.artistId)
         checkValid(data, {artistId: 'number'})
-          try{
-            if (unqfyClient.getArtistById(id))
-            {
-              notificador.deleteSuscribes(id)
-            }   
-          }  
-          catch(e){
-            res.status(404)
-            res.json(e)
+
+        let promisBoolean= unqfyClient.getArtistById(id)
+        promisBoolean.then ( (existeArtista)=>{
+          if (existeArtista){
+            res.json(notificador.deleteSuscribes(id))
           } 
-    })
+        }) 
+})
 
 app.use('/api', router);
 app.use(errorHandler);

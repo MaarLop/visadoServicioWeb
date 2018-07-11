@@ -15,7 +15,7 @@ EXPOSE 5000
 COPY *.js /home/node/my_node_app/
 COPY spotifyCreds.json . 
 
-RUN chown node:users /home/node/
+RUN chown  -R  node:users /home/node/
 
 
 USER node
