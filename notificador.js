@@ -51,6 +51,10 @@ class Notificador{
     deleteSuscribes(artId){
         this.subcripciones.delete(artId);
     }
+
+    has(id){
+        return this.subcripciones.has(id)
+    }
 }
 
 module.exports={

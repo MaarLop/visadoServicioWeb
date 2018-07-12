@@ -58,6 +58,9 @@ function valid(data, expect){
             "success":false
           })  
       } 
+    }).catch((error)=>{
+      res.status(404)
+      res.json(error.error)
     })
 });  
   router.route('/unsubscribe').post( function (req,res){/////
@@ -73,12 +76,10 @@ function valid(data, expect){
           res.json({
             "success":true
           })
-      }
-      else{
-          res.json({
-            "success":false
-          })  
       } 
+    }).catch((error)=>{
+      res.status(404)
+      res.json(error.error)
     })
   });  
   router.route('/notify').post( function (req,res){////
@@ -94,7 +95,10 @@ function valid(data, expect){
       if (existeArtista){
         res.json(notificador.notify(id, subj,msj, from) ) 
       } 
-    })  
+    }).catch((error)=>{
+      res.status(404)
+      res.json(error.error)
+    })
 })
 
     router.route('/suscriptions').post( function (req,res){
@@ -104,12 +108,18 @@ function valid(data, expect){
 
         let promisBoolean= unqfyClient.getArtistById(id)
         promisBoolean.then ( (existeArtista)=>{
-          if (existeArtista){ 
+          if (existeArtista && notificador.has(id)){ 
             res.json({
                "artistId": data.artistId,
                "suscriptores": notificador.getSuscriptions(id)
             })      
           }
+          else{
+            res.json({"message":"Artista sin suscripciones"})
+          }
+  }).catch((error)=>{
+    res.status(404)
+    res.json(error.error)
   })
 })
 
@@ -123,7 +133,10 @@ function valid(data, expect){
           if (existeArtista){
             res.json(notificador.deleteSuscribes(id))
           } 
-        }) 
+        }).catch((error)=>{
+          res.status(404)
+          res.json(error.error)
+        })
 })
 
 app.use('/api', router);

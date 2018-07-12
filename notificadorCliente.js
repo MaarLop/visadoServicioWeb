@@ -3,7 +3,7 @@ const url_  = 'http://localhost:5001/api/'
 const rp    = require('request-promise');
 
 function update(art, album)
-{   console.log(' esto es el update')
+{   
     return notify(art.id, 'UNQfy <unqfy.notify@gmail.com', 
     'New album for artists'+art.name,
     'se agrego el album '+ album)
@@ -11,7 +11,6 @@ function update(art, album)
 
 function notify( id, from, sub, body_)
 {
-    console.log(" esto es el nofify")
     let options= {
         url: url_+'notify/',
         method: 'POST',

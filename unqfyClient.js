@@ -16,19 +16,15 @@ function getArtistById(artistId)
             if( response.id >=0)
             {
                 return true
-                console.log("aca si debe entrar")
             }
             else
             {
                 throw new error.ResourceNotFound();
                 return false
-                console.log("no deberia entrar aca")
-                
             }
         }
         catch(e)
         {
-            console.log("tampoco deberia entrar en el catch")
             res.status(404)
             res.json(e)
         }
