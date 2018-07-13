@@ -145,26 +145,33 @@ router.route('/artists').post( function (req,res){
     }
         
     });
-    //router.route('/albums/:id').delete(function(req,res)
+    //////////////////////////////////////////
+    /*
+    Url en la que se trae el ultimo twit que se menciona al artista, cada vez que se envie esta peticion,
+    el resultado cambiara (en caso de que se haya publicado otro twit mencionando al artista)
+    */
     router.route('/lookTwit/:id').get(function(req,res){
         let unq= unqmod.getUNQfy('unqfy.json')
-        let id= parseInt(req.params.id)
-        let artist= unq.getArtistById(id)
+        let artist= unq.getArtistById(req.params.id);
         try
         {
-            if (artist==null)
+            if (artist ==null)
             {
-                throw new error.RelatedResourceNotFoundError()
+                throw new error.ResourceAlreadyExists();
             }
             unq.twittes(artist.name)
             res.json(unq.getTwitts(artist.name))
-            console.log(unq.getTwitts(artist.name))
+           
         }
-        catch(e){
-            res.status(404)
+        catch(e)
+        {
+            res.status(409)
             res.json(e)
         }
-    });
+            
+        });
+    //////////////////////////////////////////
+    
 
     router.route('/albums').get(function (req, res) 
     {
@@ -296,7 +303,6 @@ router.route('/artists').post( function (req,res){
     }
     router.use((req, res) => {
         res.status(404);
-        console.log("entro aca")
         res.json({status: 404, errorCode: 'RESOURCE_NOT_FOUND'});
       });
     router.use(errorHandler);

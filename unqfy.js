@@ -1,4 +1,3 @@
-
 const picklejs = require('./pickle.js');
 
 const artistmod = require('./artista.js');
@@ -532,5 +531,3 @@ module.exports = {
   getUNQfy,
   saveUNQfy,
 };
-
-

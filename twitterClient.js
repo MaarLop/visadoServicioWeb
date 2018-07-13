@@ -26,4 +26,3 @@ function get(name){
 module.exports={
     get
 }
-

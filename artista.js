@@ -6,7 +6,7 @@ class Artista{
     this.albums = [];
     this.country = pais;
     this.videos= []
-    this.twitts= []
+    this.twitts= null;
   }
 toJson(){
   let albs= [];
@@ -113,7 +113,6 @@ toJson(){
 
   getTwitt(){
     return this.twitts.text
-    console.log(this.twitts.text)
   }
 
 }
