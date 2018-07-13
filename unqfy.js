@@ -494,14 +494,15 @@ class UNQfy {
   twittes(name){
     let artist= this.getArtistByName(name)
     let twit= tw.get(name)
-    artist.addTwitts(twit)
-     console.log(twit)
+    twit.then((t)=>{
+    artist.addTwitts(t)
     this.save('unqfy.json')
-    }
+    })
+}
 
   getTwitts(name){
     let a= this.getArtistByName(name);
-    return a.twitts
+    return a.getTwitt()
   }
 
   save(filename = 'unqfy.json') {

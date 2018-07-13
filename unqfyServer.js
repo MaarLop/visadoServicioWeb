@@ -145,6 +145,26 @@ router.route('/artists').post( function (req,res){
     }
         
     });
+    //router.route('/albums/:id').delete(function(req,res)
+    router.route('/lookTwit/:id').get(function(req,res){
+        let unq= unqmod.getUNQfy('unqfy.json')
+        let id= parseInt(req.params.id)
+        let artist= unq.getArtistById(id)
+        try
+        {
+            if (artist==null)
+            {
+                throw new error.RelatedResourceNotFoundError()
+            }
+            unq.twittes(artist.name)
+            res.json(unq.getTwitts(artist.name))
+            console.log(unq.getTwitts(artist.name))
+        }
+        catch(e){
+            res.status(404)
+            res.json(e)
+        }
+    });
 
     router.route('/albums').get(function (req, res) 
     {
@@ -260,6 +280,7 @@ router.route('/artists').post( function (req,res){
             res.json(e)
         }
     });
+    
 
     function errorHandler(err,req, res, next){
         if (err instanceof error.APIerror){
@@ -275,6 +296,7 @@ router.route('/artists').post( function (req,res){
     }
     router.use((req, res) => {
         res.status(404);
+        console.log("entro aca")
         res.json({status: 404, errorCode: 'RESOURCE_NOT_FOUND'});
       });
     router.use(errorHandler);

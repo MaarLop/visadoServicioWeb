@@ -108,11 +108,12 @@ toJson(){
   }
 
   addTwitts(t){
-    this.twitts.push(t)
+    this.twitts=t
   }
 
-  getTwitts(){
-    return this.twitts
+  getTwitt(){
+    return this.twitts.text
+    console.log(this.twitts.text)
   }
 
 }

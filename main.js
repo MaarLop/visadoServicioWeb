@@ -88,11 +88,13 @@ switch (command ){
   case 'addTwits':
   let param= process.argv[3]
   unqfy.twittes(param)
+  break
 
   case 'getTwits':
   let p= process.argv[3]
   console.log(unqfy.getTwitts(p))
-
+  break 
+  
   }
 }
 
