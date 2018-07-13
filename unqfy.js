@@ -495,6 +495,7 @@ class UNQfy {
     let twit= tw.get(name)
     twit.then((t)=>{
     artist.addTwitts(t)
+    // console.log(t)/
     this.save('unqfy.json')
     })
 }

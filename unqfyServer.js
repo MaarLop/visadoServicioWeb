@@ -147,8 +147,8 @@ router.route('/artists').post( function (req,res){
     });
     //////////////////////////////////////////
     /*
-    Url en la que se trae el ultimo twit que se menciona al artista, cada vez que se envie esta peticion,
-    el resultado cambiara (en caso de que se haya publicado otro twit mencionando al artista)
+    Url en la que se trae el ultimo twit que del artista, cada vez que se envie esta peticion,
+    el resultado cambiara (en caso de que se haya publicado otro twit )
     */
     router.route('/lookTwit/:id').get(function(req,res){
         let unq= unqmod.getUNQfy('unqfy.json')
@@ -160,7 +160,9 @@ router.route('/artists').post( function (req,res){
                 throw new error.ResourceAlreadyExists();
             }
             unq.twittes(artist.name)
-            res.json(unq.getTwitts(artist.name))
+            res.json({
+                "artistId":artist.id,
+                "lastTwitt":unq.getTwitts(artist.name)})
            
         }
         catch(e)
