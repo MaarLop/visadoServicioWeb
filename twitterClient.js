@@ -10,7 +10,7 @@ var client = new Twitter({
   });
    
   function get (name){
-  var params = {screen_name: name};
+  var params = {screen_name: name.replace(/\s/g,'')};
   return client.get('statuses/user_timeline', params).then(function(tweets) {
      return(tweets[0].text);
     })

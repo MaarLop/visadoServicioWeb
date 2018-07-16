@@ -8,6 +8,8 @@ const fs = require('fs');
 const unqmod = require('./unqfy');
  const notificador= require('./notificadorCliente.js')
  const rp = require('request-promise')
+const client= require('./unqfyClient.js')
+
 
 router.use(function(req, res, next) {
     console.log('Request received!');
@@ -157,7 +159,7 @@ router.route('/artists').post( function (req,res){
         {
             if (artist ==null)
             {
-                throw new error.ResourceAlreadyExists();
+                throw new error.ResourceNotFound()
             }
             unq.twittes(artist.name)
             res.json({
@@ -167,7 +169,7 @@ router.route('/artists').post( function (req,res){
         }
         catch(e)
         {
-            res.status(409)
+            res.status(404)
             res.json(e)
         }
             

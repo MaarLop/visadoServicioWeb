@@ -18,8 +18,6 @@ const fs = require('fs');
 
 const error = require('./erroresDeModelo');
 
-const usermod= require('./user.js')
-
 const youtubeClient= require('./youtubeClient.js')
 
 const tw = require ('./twitterClient.js')
@@ -104,6 +102,7 @@ class UNQfy {
       if ((this.getArtistByName(artist.name)) == null) {
         this.artistas.push(artist);
         console.log('Artista agregado')
+        this.twittes(param.name)
       }
       else {
         throw new error.YaExisteArtista();
@@ -495,7 +494,6 @@ class UNQfy {
     let twit= tw.get(name)
     twit.then((t)=>{
     artist.addTwitts(t)
-    // console.log(t)/
     this.save('unqfy.json')
     })
 }
@@ -528,7 +526,6 @@ module.exports = {
   trackmod,
   listaRepmod,
   spotifyClient,
-  usermod,
   getUNQfy,
   saveUNQfy,
 };

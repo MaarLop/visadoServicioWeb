@@ -1,6 +1,6 @@
 class Artista{
     
-  constructor (_id,nombre, pais){
+  constructor (_id,nombre, pais,tw){
     this.id= parseInt (_id)
     this.name = nombre;
     this.albums = [];
@@ -109,7 +109,6 @@ toJson(){
 
   addTwitts(t){
     this.twitts=t
-    console.log(typeof t)
   }
 
   getTwitt(){
